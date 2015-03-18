@@ -2,7 +2,7 @@
 #define COMMAND_HPP_
 
 #include <string>
-#include <list>
+#include <vector>
 #include "Flag.hpp"
 #include "Compiler.hpp"
 #include "File.hpp"
@@ -12,56 +12,48 @@ class Command {
  public:
 	
 	// Constructors
-	Command(Compiler compiler) {
-		_compiler = compiler;
-	}
-	
-	Command(std::list<Flag> flags) {
-		_flags = flags;
-	}
-	
-	Command(std::list<File> files) {
-		_files = files;
-	}
-	
-	Command(std::list<Flag> flags, std::list<File> files) {
-		_flags = flags;
-		_files = files;
-	}
-	
-	Command(Compiler compiler, std::list<Flag> flags, std::list<File> files) {
-		_compiler = compiler;
-		_flags = flags;
-		_files = files;
-	}
-	
-	
-	
+	Command(Compiler compiler) : _compiler(compiler) {}
 	~Command(){}
+	// TODO
+	//Command(std::vector<Flag> flags) : _flags(flags) {} 
+	//Command(std::vector<File> files) : _files(files) {}
+	//Command(std::vector<Flag> flags, std::vector<File> files) : _flags(flags), _files(files) {}
+	//Command(Compiler compiler, std::vector<Flag> flags, std::vector<File> files) : _compiler(compiler), _flags(flags), _files(files) {}
+
 	
 	// Methods
 	void addFlag(Flag flag) {
-		_flags.push_front(flag);
+		_flags.push_back(flag);
 	}
 	
 	void addFile(File file) {
-		_files.push_front(file);
+		_files.push_back(file);
 	}
 	
-	void removeFlag(Flag flagToRemove) {	
-		_flags.remove(flagToRemove);
-	}
-	
-	void removeFile(File fileToRemove) {
-		_files.remove(fileToRemove);
+	// TODO
+	std::string toCommand() {
+		
+		std::string command = _compiler.getCompiler();
+		
+		// Adding files
+		for(int i = 0; i < _files.size(); i++) {
+			command += _files.at(i).getPath();
+		}
+		
+		// Adding flags
+		for(int i = 0; i < _flags.size(); i++) {
+			command += _flags.at(i).getFlag();
+		}
+		
+		return command;
 	}
 	
 	// Getters & Setters
-	std::list<Flag> getFlags() {
+	std::vector<Flag> getFlags() {
 		return _flags;
 	}	
 	
-	std::list<File> getFiles() {
+	std::vector<File> getFiles() {
 		return _files;
 	}
 	
@@ -74,8 +66,8 @@ class Command {
 	}
 	
  private:
-	std::list<Flag> _flags;
-	std::list<File> _files;
+	std::vector<Flag> _flags;
+	std::vector<File> _files;
 	Compiler _compiler;
 };
 

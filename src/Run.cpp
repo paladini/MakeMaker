@@ -1,4 +1,5 @@
 #include "Command.hpp"
+#include "FileManager.hpp"
 
 int main(int argc, char* argv[]) {
 	
@@ -22,6 +23,7 @@ int main(int argc, char* argv[]) {
 	
 	// Criando um arquivo
 	FileManager myAwesomeMakefile("makefile");
+	myAwesomeMakefile.write(line1.toCommand());
 	
 		
 }
