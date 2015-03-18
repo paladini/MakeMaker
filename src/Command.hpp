@@ -12,8 +12,20 @@ class Command {
  public:
 	
 	// Constructors
-	Command() { }
-	~Command() { }
+	Command(std::list<Flag> flags) {
+		_flags = flags;
+	}
+	
+	Command(std::list<Flag> flags, std::list<File> files) {
+		_flags = flags;
+		_files = files;
+	}
+	
+	Command(std::list<File> files) {
+		_files = files;
+	}
+	
+	~Command(){}
 	
 	// Methods
 	void addFlag(Flag flag) {
@@ -53,6 +65,6 @@ class Command {
 	std::list<Flag> _flags;
 	std::list<File> _files;
 	Compiler _compiler;
-}
+};
 
 #endif

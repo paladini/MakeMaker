@@ -21,6 +21,6 @@ class Compiler {
 
  private:
  	std::string _compiler;
-}
+};
 
 #endif

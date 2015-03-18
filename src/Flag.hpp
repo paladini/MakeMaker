@@ -21,6 +21,6 @@ class Flag {
 
  private:
  	std::string _flagname;
-}
+};
 
 #endif

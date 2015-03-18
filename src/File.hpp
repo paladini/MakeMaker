@@ -22,6 +22,6 @@ class File {
  private:
 	std::string _path;
 
-}
+};
 
 #endif
