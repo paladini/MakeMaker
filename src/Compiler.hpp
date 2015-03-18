@@ -1,21 +1,26 @@
 #ifndef COMPILER_HPP_
 #define COMPILER_HPP_
+
 #include <stdio.h>
+#include <string>
+
 class Compiler {
 
  public:
-	Compiler(string compiler) {
+	Compiler(std::string compiler) {
 		_compiler = compiler;
 	}
 
-	string getCompiler() {
+	std::string getCompiler() {
 		return _compiler;
 	}
 
-	void setCompiler(string compiler) {
+	void setCompiler(std::string compiler) {
 		_compiler = compiler;
 	}
 
  private:
- 	string _compiler;
+ 	std::string _compiler;
 }
+
+#endif

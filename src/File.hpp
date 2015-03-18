@@ -1,8 +1,11 @@
+#ifndef FILE_HPP_
+#define FILE_HPP_
+
 #include <string>
 
 class File {
 
-public:
+ public:
 	File(std::string path) {
 		_path = path;
 	}
@@ -16,7 +19,9 @@ public:
 		return _path;
 	}
 
-private:
+ private:
 	std::string _path;
 
 }
+
+#endif
