@@ -37,12 +37,12 @@ class Command {
 		
 		// Adding files
 		for(int i = 0; i < _files.size(); i++) {
-			command += _files.at(i).getPath();
+			command += " " + _files.at(i).getPath() ;
 		}
 		
 		// Adding flags
 		for(int i = 0; i < _flags.size(); i++) {
-			command += _flags.at(i).getFlag();
+			command += " " + _flags.at(i).getFlag();
 		}
 		
 		return command;

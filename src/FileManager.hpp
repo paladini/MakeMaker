@@ -6,21 +6,21 @@
 class FileManager {
 
  public:
-	 FileManager() {}
-	 FileManager(std::string path) {
+	FileManager() {}
+	FileManager(std::string path) {
 	 	_path = path;
 	 	if(!verify()){
 	 		create();
 	 	}
-	 }
+	}
 	 
-	 // TODO
-	 ~FileManager() {/*TODO*/}
-	 void parse() { }
-	 void update() { }
+	// TODO
+	~FileManager() {/*TODO*/}
+	void parse() { }
+	void update() { }
 	 
-	 // Colocar privado depois
-	 void write(std::string newContent) {
+	// Colocar privado depois
+	void write(std::string newContent) {
 	 	std::ofstream makefile (_path.c_str());
 	 	if(makefile.is_open()) {
   			makefile << newContent;
@@ -28,11 +28,10 @@ class FileManager {
   			return;
   		} 
   		throw -1;
-	 }
+	}
 	 
  private:
-	
-	std::string _path;
+
  
 	std::string read() {
 	 	std::string content;
@@ -50,17 +49,18 @@ class FileManager {
 	
 
 	 
-	 bool verify() {
+	bool verify() {
 		std::ifstream makefile((&_path)->c_str());
   		return makefile;
-	 }
+	}
 	 
-	 void create() {
+	void create() {
 	 	std::ofstream make;
   		make.open(_path.c_str());
   		make.close();
-	 }
+	}
 	 
-	
+		
+	std::string _path;
 };
 #endif
