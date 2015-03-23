@@ -53,6 +53,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -61,7 +62,52 @@ class Interpreter {
  public:
  	Interpreter(int argc, char** argv) : _argc(argc), _argv(argv) {}
 
- 	void parse() { }
+ 	void parse() {
+
+ 		// Checks if no argument was given to program.
+ 		if(_argc == 1) {
+ 			print_usage();
+ 			print_params();
+ 			return;
+ 		}
+
+ 		// Check if the action as an delete action.
+ 		if(_argv[1] == "!") {
+ 			parse_delete();
+ 		} else {
+ 			parse_add();
+ 		}
+
+ 	}
+
+
+ private:
+
+ 	// TODO: implement that.
+ 	void parse_add() { }
+
+ 	void parse_delete() {
+
+ 		// If only target was given, delete target.
+ 		if(_argc == 3) {
+ 			// TODO Delete the given target.
+ 			return;
+ 		}
+
+ 		// Cause there's 4 arguments, must determine what's the used flag (-c, -f, -F)
+ 		switch(_argv[4]) {
+ 			case "-c":
+ 				break;
+ 			case "-f":
+ 				break;
+ 			case "-F":
+ 				
+ 		}
+ 	}
+
+ 	void print_usage() {
+ 		printf(usage.c_str());
+ 	}
 
  	// Remove later.
  	void print_params() {
@@ -72,8 +118,37 @@ class Interpreter {
  		}
  	}
 
- private:
+ 	/* void print_noArguments() {
+ 		printf(noArguments.c_str());
+ 		int option = -1;
+ 		printf("\nDo you like to see instructions about how to use this software? (1/0)");
+ 		while(option != 0 && option != 1) {
+ 			cin >> option;
+ 		}
+ 		
+ 		if(option == 1) {
+			printf(usage.c_str()); 			
+ 		} 
+ 	} */
+
+ 	// Variables
  	int _argc;
  	char** _argv;
+
+ 	// Messages (constants)
+ 	const std::string 
+ 		noArguments = "No arguments is given, try again using the correct parameters.\n",
+ 		usage = "======================================================================\n" \
+ 				"    MakeMaker is an easy-to-use tool that generate makefiles.\n" \
+ 				"\n    Currently there's no GUI interface for this tool, so you must" \
+ 				"\n    create your makefiles by command line. Following you can check" \
+ 				"\n    the usage of this tool. Hope it helps you.\n" 
+ 				"\n    This software's distribued under the MIT license.\n" \
+ 				"======================================================================\n" \
+ 				"\n    Usage:\n" \
+ 				"\n\t# Create / Edit a Target:" \
+ 				"\n\tmm <target>\n" \
+ 				"\n\t# Adding command to Target:" \
+ 				"\n\tmm <target> <command>\n";
 };
 #endif

@@ -5,7 +5,7 @@
 int main(int argc, char* argv[]) {
 	
 	Interpreter interpreter(argc, argv);
-	interpreter.print_params();
+	interpreter.parse();
 
 	/* Usage example:
 	Flag flag1("-output");

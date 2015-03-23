@@ -1,12 +1,13 @@
 CC=g++
+FLAGS=-std=c++11
 
-all: test_compile test_run
+all: test
 
 test_compile:
 	$(CC) src/Run.cpp -o binary/Run
 
-test_run:
-	cd binary/ && ls && ./Run testando
+test:
+	cd binary/ && clear && clear && ./Run
 
 compile:
 	$(CC) src/Flag.hpp -o binary/Flag.o
