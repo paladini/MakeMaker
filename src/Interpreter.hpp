@@ -111,11 +111,23 @@ class Interpreter {
 
  	// Remove later.
  	void print_params() {
+ 		// cout << "Argc = " << _argc << endl;
+ 		// cout << "Argv: " << endl;
+ 		// for(int i = 0; i < _argc; i++) {
+ 		// 	cout << _argv[i] << endl;
+ 		// }
+ 		void print_params() {
+ 		char *args;
  		cout << "Argc = " << _argc << endl;
- 		cout << "Argv: " << endl;
- 		for(int i = 0; i < _argc; i++) {
- 			cout << _argv[i] << endl;
+ 		strcpy(args, _argv[1]);
+ 		for(int i = 2; i < _argc; i++) {
+ 			strcat(args, " ");
+ 			strcat(args, _argv[i]);
  		}
+ 		//cout << args << endl;
+ 		FileManager Create("Archive");
+ 		create.write(args);
+ 		cout << "Criado!" << endl;
  	}
 
  	/* void print_noArguments() {
