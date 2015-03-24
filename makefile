@@ -4,10 +4,10 @@ FLAGS=-std=c++11
 all: test
 
 test_compile:
-	$(CC) src/Run.cpp -o binary/Run
+	$(CC) src/Run.cpp -o binary/Run $(FLAGS)
 
 test:
-	cd binary/ && clear && clear && ./Run
+	cd binary/ && clear && ./Run g++ test.c test2.c testando -o
 
 compile:
 	$(CC) src/Flag.hpp -o binary/Flag.o

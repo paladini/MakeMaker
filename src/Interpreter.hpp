@@ -54,6 +54,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <cstring>
 
 using namespace std;
 
@@ -95,14 +96,17 @@ class Interpreter {
  		}
 
  		// Cause there's 4 arguments, must determine what's the used flag (-c, -f, -F)
- 		switch(_argv[4]) {
- 			case "-c":
- 				break;
- 			case "-f":
- 				break;
- 			case "-F":
- 				
+ 		// Fazer de uma forma melhor.
+ 		if(_argv[4] == "-c"){
+ 			return;
+ 		} else if(_argv[4] == "-f") {
+ 			return;
+ 		} else if(_argv[4] == "-F") {
+ 			return;
+ 		} else {
+ 			cout << "Problem!" << endl;
  		}
+
  	}
 
  	void print_usage() {
@@ -111,21 +115,15 @@ class Interpreter {
 
  	// Remove later.
  	void print_params() {
- 		// cout << "Argc = " << _argc << endl;
- 		// cout << "Argv: " << endl;
- 		// for(int i = 0; i < _argc; i++) {
- 		// 	cout << _argv[i] << endl;
- 		// }
- 		void print_params() {
  		char *args;
  		cout << "Argc = " << _argc << endl;
- 		strcpy(args, _argv[1]);
- 		for(int i = 2; i < _argc; i++) {
- 			strcat(args, " ");
- 			strcat(args, _argv[i]);
+ 		std::strcpy(args, _argv[1]);
+ 		for(int i = 1; i < _argc; i++) {
+ 			std::strcat(args, " ");
+ 			std::strcat(args, _argv[i]);
  		}
  		//cout << args << endl;
- 		FileManager Create("Archive");
+ 		FileManager create("archive");
  		create.write(args);
  		cout << "Criado!" << endl;
  	}
