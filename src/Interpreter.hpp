@@ -54,7 +54,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
-#include <cstring>
+#include <string.h>
+// #include <cstring>
 
 using namespace std;
 
@@ -65,8 +66,12 @@ class Interpreter {
 
  	void parse() {
 
+ 		if (_argc > 1) {
+	 		print_params();
+ 		}
+
  		// Checks if no argument was given to program.
- 		if(_argc == 1) {
+ 		/* if(_argc == 1) {
  			print_usage();
  			print_params();
  			return;
@@ -77,7 +82,7 @@ class Interpreter {
  			parse_delete();
  		} else {
  			parse_add();
- 		}
+ 		} */
 
  	}
 
@@ -115,12 +120,11 @@ class Interpreter {
 
  	// Remove later.
  	void print_params() {
- 		char *args;
+ 		char *args = _argv[1];
  		cout << "Argc = " << _argc << endl;
- 		std::strcpy(args, _argv[1]);
- 		for(int i = 1; i < _argc; i++) {
- 			std::strcat(args, " ");
- 			std::strcat(args, _argv[i]);
+ 		for(int i = 2; i < _argc; i++) {
+ 			strcat(args, " ");
+ 			strcat(args, _argv[i]);
  		}
  		//cout << args << endl;
  		FileManager create("archive");
