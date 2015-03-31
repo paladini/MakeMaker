@@ -1,10 +1,14 @@
 #include "Command.hpp"
 #include "FileManager.hpp"
 #include "Interpreter.hpp"
+#include "MakeFile.hpp"
 
 int main(int argc, char* argv[]) {
 	
-	Interpreter interpreter(argc, argv);
+	// Creating a makefile
+	MakeFile mk("makefile");
+
+	Interpreter interpreter(argc, argv, mk);
 	interpreter.parse();
 
 	/* Usage example:

@@ -2,11 +2,12 @@
 #define FILEMANAGER_H_
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 class FileManager {
 
  public:
-	FileManager() {}
+	FileManager() { }
 	FileManager(std::string path) {
 	 	_path = path;
 	 	if(!verify()){
@@ -15,11 +16,8 @@ class FileManager {
 	}
 	 
 	// TODO
-	~FileManager() {/*TODO*/}
-	void parse() { }
-	void update() { }
-	 
-	// Colocar privado depois
+	~FileManager() { }
+
 	void write(std::string newContent) {
 	 	std::ofstream makefile (_path.c_str());
 	 	if(makefile.is_open()) {
@@ -29,10 +27,7 @@ class FileManager {
   		} 
   		throw -1;
 	}
-	 
- private:
 
- 
 	std::string read() {
 	 	std::string content;
 	 	std::string line;
@@ -46,9 +41,9 @@ class FileManager {
  		}
  		throw -1;
 	}
-	
-
 	 
+ private:
+ 
 	bool verify() {
 		std::ifstream makefile((&_path)->c_str());
   		return makefile;

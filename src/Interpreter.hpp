@@ -55,6 +55,9 @@
 #include <iostream>
 #include <string>
 #include <string.h>
+#include <vector>
+#include "MakeFile.hpp"
+#include "Target.hpp"
 // #include <cstring>
 
 using namespace std;
@@ -62,18 +65,27 @@ using namespace std;
 class Interpreter {
 
  public:
- 	Interpreter(int argc, char** argv) : _argc(argc), _argv(argv) {}
+ 	Interpreter (int argc, char** argv, MakeFile mk) : _argc(argc), _argv(argv), _mk(mk) { }
+
+ 	// TODO: enable that.
+ 	// Interpreter (string content, MakeFile mk) {
+ 	// 	_mk = mk;
+
+		// // Converting string (aka "My string with spaces" -> ['my', 'string', 'with', 'spaces']) into vector of chars.
+		// vector<char> v(content.begin(), content.end());
+
+		// // Get argc
+		// _argc = v.size();
+
+		// // Convert vector<char> to char* [].
+		// std::copy(v.begin(), v.end(), _argv);
+ 	// }
 
  	void parse() {
 
- 		if (_argc > 1) {
-	 		print_params();
- 		}
-
  		// Checks if no argument was given to program.
- 		/* if(_argc == 1) {
+ 		if(_argc == 1) {
  			print_usage();
- 			print_params();
  			return;
  		}
 
@@ -82,7 +94,7 @@ class Interpreter {
  			parse_delete();
  		} else {
  			parse_add();
- 		} */
+ 		} 
 
  	}
 
@@ -90,7 +102,18 @@ class Interpreter {
  private:
 
  	// TODO: implement that.
- 	void parse_add() { }
+ 	void parse_add() { 
+
+ 		// Get the target
+		Target target = mk.get_or_add_target(_argv[1]);
+ 		// std::string target = _argv[1];
+
+ 		// TODO
+ 		if (_argv > 1) {
+
+ 		}
+
+ 	}
 
  	void parse_delete() {
 
@@ -148,6 +171,7 @@ class Interpreter {
  	// Variables
  	int _argc;
  	char** _argv;
+ 	MakeFile _mk;
 
  	// Messages (constants)
  	const std::string 

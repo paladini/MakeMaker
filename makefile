@@ -1,7 +1,7 @@
 CC=g++
-FLAGS=-std=c++11
+#FLAGS=-std=c++11
 
-all: test
+all: test_compile test
 
 test_compile:
 	$(CC) src/Run.cpp -o binary/Run $(FLAGS)
@@ -14,3 +14,4 @@ compile:
 	$(CC) src/Compiler.hpp -o binary/Compiler.o
 	$(CC) src/File.hpp -o binary/File.o
 	$(CC) src/Command.hpp -o binary/Command.o
+	$(CC) src/MakeFIle.hpp -o binary/MakeFile.o
