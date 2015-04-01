@@ -2,6 +2,7 @@
 #define COMMAND_HPP_
 
 #include <string>
+#include <string.h>
 #include <vector>
 #include "Flag.hpp"
 #include "Compiler.hpp"
@@ -12,7 +13,9 @@ class Command {
  public:
 	
 	// Constructors
-	Command(Compiler compiler) : _compiler(compiler) {}
+	Command(){}
+
+	// Command(Compiler compiler) : _compiler(compiler) {}
 	~Command(){}
 	// TODO
 	//Command(std::vector<Flag> flags) : _flags(flags) {} 
@@ -22,6 +25,31 @@ class Command {
 
 	
 	// Methods
+	void setFiles(std::vector<File> files) {
+		_files = files;
+	}
+
+	void setFlags(std::vector<Flag> flags) {
+		_flags = flags;
+	}
+
+	/* void addFiles(std::vector<File> files) {
+		bool fileExists = 0;
+		for (int i = 0; i < files.size(); i++) {
+			for (int j = 0; j < _files.size(); j++) {
+				if ( strcasecmp(files.at(i).getPath(), _files.at(j).getFile()) ) {
+					fileExists = 1;
+					break;
+				}
+			}
+
+			if(fileExists == 0) {
+				_files.push_back(files.at(i));
+			}
+			fileExists = 0;
+		}
+	} */
+
 	void addFlag(Flag flag) {
 		_flags.push_back(flag);
 	}

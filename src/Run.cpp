@@ -6,10 +6,12 @@
 int main(int argc, char* argv[]) {
 	
 	// Creating a makefile
-	MakeFile mk("makefile");
+	//MakeFile mk("makefile");
 
-	Interpreter interpreter(argc, argv, mk);
-	interpreter.parse();
+	Interpreter interpreter(argc, argv);
+	MakeFile mk = interpreter.parse();
+
+	mk.save();
 
 	/* Usage example:
 	Flag flag1("-output");

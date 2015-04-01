@@ -1,16 +1,26 @@
 #ifndef TARGET_HPP_
 #define TARGET_HPP_
 
-#include <list>
+#include <vector>
+#include <string>
 #include "Command.hpp"
 
 class Target {
 
  public:
- 	Target() { } 
+ 	Target(std::string title) : _title(title) { } 
+
+ 	std::string getTitle() {
+ 		return _title;
+ 	}
+
+ 	std::vector<Command> getCommands() {
+ 		return _listCommand;
+ 	}
 
  private:
- 	std::list<Command> _listCommand;
+ 	std::string _title;
+ 	std::vector<Command> _listCommand;
 
 };
 #endif

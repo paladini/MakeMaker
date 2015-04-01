@@ -58,6 +58,7 @@
 #include <vector>
 #include "MakeFile.hpp"
 #include "Target.hpp"
+#include "Command.hpp"
 // #include <cstring>
 
 using namespace std;
@@ -65,13 +66,13 @@ using namespace std;
 class Interpreter {
 
  public:
- 	Interpreter (int argc, char** argv, MakeFile mk) : _argc(argc), _argv(argv), _mk(mk) { }
+ 	Interpreter (int argc, char** argv) : _argc(argc), _argv(argv) { }
 
  	// TODO: enable that.
  	// Interpreter (string content, MakeFile mk) {
  	// 	_mk = mk;
 
-		// // Converting string (aka "My string with spaces" -> ['my', 'string', 'with', 'spaces']) into vector of chars.
+	    // Converting string (aka "My string with spaces" -> ['my', 'string', 'with', 'spaces']) into vector of chars.
 		// vector<char> v(content.begin(), content.end());
 
 		// // Get argc
@@ -81,7 +82,7 @@ class Interpreter {
 		// std::copy(v.begin(), v.end(), _argv);
  	// }
 
- 	void parse() {
+ 	MakeFile parse() {
 
  		// Checks if no argument was given to program.
  		if(_argc == 1) {
@@ -96,6 +97,7 @@ class Interpreter {
  			parse_add();
  		} 
 
+ 		return _mk;
  	}
 
 
@@ -104,13 +106,35 @@ class Interpreter {
  	// TODO: implement that.
  	void parse_add() { 
 
+ 		// mm <target>  <command>
+ 		// TODO: I guess it's something wrong here.
  		// Get the target
-		Target target = mk.get_or_add_target(_argv[1]);
- 		// std::string target = _argv[1];
+		Target target = _mk.get_or_add_target(_argv[1]);
 
- 		// TODO
+		// Generating new command
+		Command command();
+
+ 		// TODO:
+		//	Differences between "mm <target> <command>" and "mm <target>:<lineOfCommand> <command>", where:
+		//      - In the first case, add a new target.
+		//      - In the second case, overwrites a command (given by the "lineOfCommand"). 
  		if (_argv > 1) {
 
+ 			// Get compiler
+ 			Compiler compiler(_argv[2]);
+ 			command.setCompiler(compiler);
+
+ 			// Get files
+ 			std::vector<File> files = parse_files();
+ 			command.addFiles(files);
+
+ 			// Get flags
+ 			int startsAt = 2 + files.size();
+ 			std::vector<Flag> flags = parse_flags(startsAt);
+ 			command.addFlags(flags);
+
+ 			// Adding command to target
+ 			target.addCommand(command);
  		}
 
  	}
@@ -135,6 +159,34 @@ class Interpreter {
  			cout << "Problem!" << endl;
  		}
 
+ 	}
+
+ 	std::vector<Flag> parse_flags(const int startsAt) {
+ 		int i = startsAt;
+ 		std::vector<Flag> flags;
+
+ 		while(i < _argc) {
+ 			std::string flag = _argv[i];
+ 			Flag flag(flag);
+ 			flags.push_back(flag);
+ 			i++;
+ 		}
+
+ 		return flags;
+ 	}
+
+ 	std::vector<File> parse_files() {
+ 		int i = 3;
+ 		std::vector<File> files;
+
+ 		while(input.at(0) != '-') {
+	 		std::string input = _argv[i];
+ 			File file(input);
+ 			files.push_back(file);
+ 			i++;
+ 		}
+
+ 		return files;
  	}
 
  	void print_usage() {
@@ -171,7 +223,7 @@ class Interpreter {
  	// Variables
  	int _argc;
  	char** _argv;
- 	MakeFile _mk;
+ 	MakeFile _mk("makefile");
 
  	// Messages (constants)
  	const std::string 
