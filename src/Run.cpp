@@ -9,9 +9,9 @@ int main(int argc, char* argv[]) {
 	//MakeFile mk("makefile");
 
 	Interpreter interpreter(argc, argv);
-	MakeFile mk = interpreter.parse();
+	MakeFile* mk = interpreter.parse();
 
-	mk.save();
+	mk->save();
 
 	/* Usage example:
 	Flag flag1("-output");

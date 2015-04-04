@@ -20,10 +20,10 @@ class MakeFile {
 		for(int i = 0; i < _listTarget.size(); i++) {
 
 			Target that = _listTarget.at(i);
-			std::string temp = that.getTitle() + ":";
-
-			for(int j = 0; j < that.getCommands.size()) {
-				temp += "\n" + that.getCommands.at(j).toCommand();
+			std::string temp = strcat(that.getTitle(), ":");
+			std::vector<Command> listCommands = that.getCommands();
+			for(int j = 0; j < listCommands.size(); j++) {
+				temp += "\n" + listCommands.at(j).toCommand();
 			}
 
 			text += temp + "\n";
@@ -37,7 +37,7 @@ class MakeFile {
 		
 		// Check if already exists
 		for(int i = 0; i < _listTarget.size(); i++) {
-			if ( strcasecmp(_listTarget.at(i).getTitle(), targetName) ) {
+			if ( strcasecmp((_listTarget.at(i)).getTitle(), targetName) ) {
 				return _listTarget.at(i);
 			}
 		}

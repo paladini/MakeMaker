@@ -13,9 +13,10 @@ class Command {
  public:
 	
 	// Constructors
-	Command(){}
+	Command() {
+		_compiler = new Compiler("gg");
+	}
 
-	// Command(Compiler compiler) : _compiler(compiler) {}
 	~Command(){}
 	// TODO
 	//Command(std::vector<Flag> flags) : _flags(flags) {} 
@@ -53,15 +54,27 @@ class Command {
 	void addFlag(Flag flag) {
 		_flags.push_back(flag);
 	}
-	
+
+	void addFlags(std::vector<Flag> flags) {
+		for (int i = 0; i < flags.size(); i++) {
+			_flags.push_back(flags.at(i));
+		}
+	}
+
 	void addFile(File file) {
 		_files.push_back(file);
+	}
+
+	void addFiles(std::vector<File> files) {
+		for (int i = 0; i < files.size(); i++) {
+			_files.push_back(files.at(i));
+		}
 	}
 	
 	// TODO
 	std::string toCommand() {
 		
-		std::string command = _compiler.getCompiler();
+		std::string command = _compiler->getCompiler();
 		
 		// Adding files
 		for(int i = 0; i < _files.size(); i++) {
@@ -85,18 +98,18 @@ class Command {
 		return _files;
 	}
 	
-	void setCompiler(Compiler compiler) {
+	void setCompiler(Compiler *compiler) {
 		_compiler = compiler;
 	}
 	
-	Compiler getCompiler() {
+	Compiler* getCompiler() {
 		return _compiler;
 	}
 	
  private:
 	std::vector<Flag> _flags;
 	std::vector<File> _files;
-	Compiler _compiler;
+	Compiler *_compiler;
 };
 
 #endif

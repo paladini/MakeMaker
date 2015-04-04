@@ -8,10 +8,14 @@
 class Target {
 
  public:
- 	Target(std::string title) : _title(title) { } 
+ 	Target(char* title) : _title(title) { } 
 
- 	std::string getTitle() {
+ 	char* getTitle() {
  		return _title;
+ 	}
+
+ 	void addCommand(Command* command) {
+ 		_listCommand.push_back(*command);
  	}
 
  	std::vector<Command> getCommands() {
@@ -19,7 +23,7 @@ class Target {
  	}
 
  private:
- 	std::string _title;
+ 	char* _title;
  	std::vector<Command> _listCommand;
 
 };

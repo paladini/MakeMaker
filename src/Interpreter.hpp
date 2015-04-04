@@ -82,7 +82,7 @@ class Interpreter {
 		// std::copy(v.begin(), v.end(), _argv);
  	// }
 
- 	MakeFile parse() {
+ 	MakeFile* parse() {
 
  		// Checks if no argument was given to program.
  		if(_argc == 1) {
@@ -109,29 +109,30 @@ class Interpreter {
  		// mm <target>  <command>
  		// TODO: I guess it's something wrong here.
  		// Get the target
-		Target target = _mk.get_or_add_target(_argv[1]);
+
+		Target target = _mk->get_or_add_target(_argv[1]);
 
 		// Generating new command
-		Command command();
+		Command* command = new Command();
 
  		// TODO:
 		//	Differences between "mm <target> <command>" and "mm <target>:<lineOfCommand> <command>", where:
 		//      - In the first case, add a new target.
 		//      - In the second case, overwrites a command (given by the "lineOfCommand"). 
- 		if (_argv > 1) {
+ 		if (_argc > 1) {
 
  			// Get compiler
- 			Compiler compiler(_argv[2]);
- 			command.setCompiler(compiler);
+ 			Compiler* compiler = new Compiler(_argv[2]);
+ 			command->setCompiler(compiler);
 
  			// Get files
  			std::vector<File> files = parse_files();
- 			command.addFiles(files);
+ 			command->addFiles(files);
 
  			// Get flags
  			int startsAt = 2 + files.size();
  			std::vector<Flag> flags = parse_flags(startsAt);
- 			command.addFlags(flags);
+ 			command->addFlags(flags);
 
  			// Adding command to target
  			target.addCommand(command);
@@ -166,8 +167,8 @@ class Interpreter {
  		std::vector<Flag> flags;
 
  		while(i < _argc) {
- 			std::string flag = _argv[i];
- 			Flag flag(flag);
+ 			std::string flg = _argv[i];
+ 			Flag flag(flg);
  			flags.push_back(flag);
  			i++;
  		}
@@ -178,9 +179,10 @@ class Interpreter {
  	std::vector<File> parse_files() {
  		int i = 3;
  		std::vector<File> files;
+ 		std::string input = _argv[3];
 
  		while(input.at(0) != '-') {
-	 		std::string input = _argv[i];
+	 		input = _argv[i];
  			File file(input);
  			files.push_back(file);
  			i++;
@@ -223,7 +225,7 @@ class Interpreter {
  	// Variables
  	int _argc;
  	char** _argv;
- 	MakeFile _mk("makefile");
+ 	MakeFile* _mk = new MakeFile("makefile");
 
  	// Messages (constants)
  	const std::string 
