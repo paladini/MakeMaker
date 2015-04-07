@@ -33,6 +33,12 @@ class MakeFile {
 		_file->write(text);
 	}
 
+	// TODO: implementar substituição de comandos
+	void add_target(Target target) {
+		_listTarget.push_back(target);
+	}
+
+	// Deprecated. To be removed.
 	Target get_or_add_target(char* targetName) {
 		
 		// Check if already exists

@@ -74,7 +74,7 @@ class Command {
 	// TODO
 	std::string toCommand() {
 		
-		std::string command = _compiler->getCompiler();
+		std::string command = "\t" + _compiler->getCompiler();
 		
 		// Adding files
 		for(int i = 0; i < _files.size(); i++) {

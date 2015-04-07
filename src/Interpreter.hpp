@@ -110,7 +110,8 @@ class Interpreter {
  		// TODO: I guess it's something wrong here.
  		// Get the target
 
-		Target target = _mk->get_or_add_target(_argv[1]);
+		// Target* target = _mk->get_or_add_target(_argv[1]);
+ 		Target target(_argv[1]);
 
 		// Generating new command
 		Command* command = new Command();
@@ -125,18 +126,32 @@ class Interpreter {
  			Compiler* compiler = new Compiler(_argv[2]);
  			command->setCompiler(compiler);
 
+ 			//printf("Compilador: %s", compiler->getCompiler());
+ 			std::cout << "Compilador: " << compiler->getCompiler() << endl;
+
  			// Get files
  			std::vector<File> files = parse_files();
  			command->addFiles(files);
+
+ 			for(int i = 0; i < files.size(); i++){
+	 			std::cout << "File[" << i << "]: " << files.at(i).getPath() << endl;
+ 			}
 
  			// Get flags
  			int startsAt = 2 + files.size();
  			std::vector<Flag> flags = parse_flags(startsAt);
  			command->addFlags(flags);
 
+ 			for(int i = 0; i < flags.size(); i++){
+	 			std::cout << "Flags[" << i << "]: " << flags.at(i).getFlag() << endl;
+ 			}
+
  			// Adding command to target
  			target.addCommand(command);
+
  		}
+
+ 		_mk->add_target(target);
 
  	}
 
