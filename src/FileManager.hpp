@@ -9,21 +9,14 @@ class FileManager {
  public:
 	FileManager() { }
 	FileManager(std::string path) {
-		fileContent = new std::string[10000];
 	 	_path = path;
 	 	if(!verify()){
 	 		create();
-	 	} else {
-	 		fileContent = read();
 	 	}
 	}
 	 
 	// TODO
 	~FileManager() { }
-
-	std::string* getFileContent() {
-		return fileContent;
-	}
 
 	void write(std::string newContent) {
 	 	std::ofstream makefile (_path.c_str());
@@ -35,15 +28,13 @@ class FileManager {
   		throw -1;
 	}
 
-	std::string* read() {
-	 	std::string content[10000];
+	std::string read() {
+	 	std::string content;
 	 	std::string line;
 	 	std::ifstream makefile(_path.c_str());
-	 	int i = 0;
  	 	if (makefile.is_open()) {
     		while (getline(makefile, line)) {
-      			content[i] += line + "\n";
-      			i++;
+      			content += line + "\n";
     		}
     		makefile.close();
     		return content;
@@ -64,7 +55,7 @@ class FileManager {
   		make.close();
 	}
 	 
-	std::string fileContent[];
+		
 	std::string _path;
 };
 #endif

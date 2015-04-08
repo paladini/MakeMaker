@@ -21,7 +21,7 @@ class Target {
  	void addCommand(Command* command, int line) {
  		int size = _listCommand.size();
  		if(size+1 < line) {
- 			std::cout<<"The chosen target doesn't have that amout of commands." <<std::endl;
+ 			std::cout<<"The chosen target doesn't have that amount of commands." <<std::endl;
  			throw -1;
  		} else  if(size == 0 || (size+1) == line){
  			_listCommand.push_back(*command);
@@ -43,4 +43,4 @@ class Target {
  	std::vector<Command> _listCommand;
 
 };
-#endif
+#endif			

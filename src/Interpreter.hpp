@@ -112,7 +112,8 @@ class Interpreter {
 
 		// Target* target = _mk->get_or_add_target(_argv[1]);
  		Target target(_argv[1]);
- 		int iterator, found = 0;
+ 		int iterator = 0;
+ 		bool found = false;
  		std::string line = "";
  		std::string target_text = string(_argv[1]);
  		char* new_arg;
@@ -130,11 +131,11 @@ class Interpreter {
  			}
  			iterator++;
  		}
-		// Generating new command
-		Command* command = new Command();
 		if(found) {
 			target = _mk->get_or_create_target(new_arg);
 		}
+		// Generating new command
+		Command* command = new Command();
  		// TODO:
 		//	Differences between "mm <target> <command>" and "mm <target>:<lineOfCommand> <command>", where:
 		//      - In the first case, add a new target.
