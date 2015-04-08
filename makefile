@@ -7,7 +7,7 @@ test_compile:
 	$(CC) src/Run.cpp -o binary/Run $(FLAGS)
 
 test:
-	cd binary/ && clear && ./Run test g++ -o main test -ggdb
+	cd binary/ && clear && ./Run compiler g++ main.c -o main
 
 compile:
 	$(CC) src/Flag.hpp -o binary/Flag.o

@@ -1,2 +1,2 @@
-piroca:
-	g++ piroca.cpp -o -o mm
+compile:
+	g++ main.c -o

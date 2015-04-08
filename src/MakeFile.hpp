@@ -37,6 +37,10 @@ class MakeFile {
 	void add_target(Target target) {
 		_listTarget.push_back(target);
 	}
+	
+	Target getTarget(int pos) {
+		return _listTarget.at(pos);
+	}
 
 	// Deprecated. To be removed.
 	Target get_or_create_target(char* targetName) {

@@ -103,39 +103,24 @@ class Interpreter {
 
  private:
 
- 	// TODO: implement that.
  	void parse_add() { 
 
- 		// mm <target>  <command>
- 		// TODO: I guess it's something wrong here.
- 		// Get the target
-
-		// Target* target = _mk->get_or_add_target(_argv[1]);
- 		Target target(_argv[1]);
- 		int iterator = 0;
- 		bool found = false;
- 		std::string line = "";
- 		std::string target_text = string(_argv[1]);
- 		char* new_arg;
- 		while(iterator < target_text.length() && !found) {
- 			if(target_text.at(iterator) == ':') {
- 				found = 1;
- 				new_arg = new char[target_text.length()];
- 				for(int i = 0; i < iterator; i++) {
- 					new_arg[i] = _argv[1][i];
- 				}
- 				for(int i = iterator+1; i < target_text.length(); i++){
- 					line += target_text.at(i);
- 				}
- 				target.setTitle(new_arg);
- 			}
- 			iterator++;
- 		}
-		if(found) {
-			target = _mk->get_or_create_target(new_arg);
-		}
+ 		int lineNumber = -1;
+ 		std::string targetName = string(_argv[1]);
+		Target target(targetName.c_str());
+		
+		// Converting myTarget:myLine into myTarget, if ":" exists.
+		int pointsPosition = targetName.find_last_of(":");
+		if(pointsPosition != -1) {
+			std::string newTargetName = targetName.substr(0, pointsPosition);
+			lineNumber = std::stoi(targetName.substr(pointsPosition + 1, targetName.length()));
+			
+			target = _mk->get_or_create_target(newTargetName.c_str());
+		} 
+		
 		// Generating new command
 		Command* command = new Command();
+		
  		// TODO:
 		//	Differences between "mm <target> <command>" and "mm <target>:<lineOfCommand> <command>", where:
 		//      - In the first case, add a new target.
@@ -146,33 +131,24 @@ class Interpreter {
  			Compiler* compiler = new Compiler(_argv[2]);
  			command->setCompiler(compiler);
 
- 			//printf("Compilador: %s", compiler->getCompiler());
- 			std::cout << "Compilador: " << compiler->getCompiler() << endl;
-
  			// Get files
  			std::vector<File> files = parse_files();
  			command->addFiles(files);
 
- 			for(int i = 0; i < files.size(); i++){
-	 			std::cout << "File[" << i << "]: " << files.at(i).getPath() << endl;
- 			}
-
  			// Get flags
- 			int startsAt = 2 + files.size();
+ 			int startsAt = 3 + files.size();
  			std::vector<Flag> flags = parse_flags(startsAt);
  			command->addFlags(flags);
 
- 			for(int i = 0; i < flags.size(); i++){
-	 			std::cout << "Flags[" << i << "]: " << flags.at(i).getFlag() << endl;
- 			}
-
  			// Adding command to target
- 			if(line.length() == 0) {
- 				target.addCommand(command);
- 			} else {
- 				std::string::size_type sz;
- 				target.addCommand(command, std::stoi(line, &sz));
- 			}
+ 			if (lineNumber != -1) {
+				target.addCommand(command, lineNumber);
+			} else {
+				target.addCommand(command);
+			} 
+			
+			// Print debug
+			// print_debug();
  		}
  		_mk->add_target(target);
 
@@ -219,46 +195,35 @@ class Interpreter {
  		std::vector<File> files;
  		std::string input = _argv[3];
 
- 		while(input.at(0) != '-') {
-	 		input = _argv[i];
+ 		while(input[0] != '-') {
  			File file(input);
  			files.push_back(file);
  			i++;
+	 		input = _argv[i];
  		}
 
  		return files;
  	}
+ 	
+ 	// TODO (not working).
+ 	void print_debug() {
+		
+		Command command = _mk->getTarget(0).getCommands().at(0);
+		
+		std::cout << "Compilador: " << command.getCompiler() << endl;
+		
+		for(int i = 0; i < command.getFiles().size(); i++){
+	 		std::cout << "File[" << i << "]: " << command.getFiles().at(i).getPath() << endl;
+ 		} 
+		
+		for(int i = 0; i < command.getFlags().size(); i++){
+	 		std::cout << "Flags[" << i << "]: " << command.getFlags().at(i).getFlag() << endl;
+ 		}
+	}
 
  	void print_usage() {
  		printf(usage.c_str());
  	}
-
- 	// Remove later.
- 	void print_params() {
- 		char *args = _argv[1];
- 		cout << "Argc = " << _argc << endl;
- 		for(int i = 2; i < _argc; i++) {
- 			strcat(args, " ");
- 			strcat(args, _argv[i]);
- 		}
- 		//cout << args << endl;
- 		FileManager create("archive");
- 		create.write(args);
- 		cout << "Criado!" << endl;
- 	}
-
- 	/* void print_noArguments() {
- 		printf(noArguments.c_str());
- 		int option = -1;
- 		printf("\nDo you like to see instructions about how to use this software? (1/0)");
- 		while(option != 0 && option != 1) {
- 			cin >> option;
- 		}
- 		
- 		if(option == 1) {
-			printf(usage.c_str()); 			
- 		} 
- 	} */
 
  	// Variables
  	int _argc;
