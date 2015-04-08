@@ -1,2 +1,2 @@
-test:
-	g++ main.c -o -o
+piroca:
+	g++ piroca.cpp -o -o mm

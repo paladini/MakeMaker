@@ -112,10 +112,29 @@ class Interpreter {
 
 		// Target* target = _mk->get_or_add_target(_argv[1]);
  		Target target(_argv[1]);
-
+ 		int iterator, found = 0;
+ 		std::string line = "";
+ 		std::string target_text = string(_argv[1]);
+ 		char* new_arg;
+ 		while(iterator < target_text.length() && !found) {
+ 			if(target_text.at(iterator) == ':') {
+ 				found = 1;
+ 				new_arg = new char[target_text.length()];
+ 				for(int i = 0; i < iterator; i++) {
+ 					new_arg[i] = _argv[1][i];
+ 				}
+ 				for(int i = iterator+1; i < target_text.length(); i++){
+ 					line += target_text.at(i);
+ 				}
+ 				target.setTitle(new_arg);
+ 			}
+ 			iterator++;
+ 		}
 		// Generating new command
 		Command* command = new Command();
-
+		if(found) {
+			target = _mk->get_or_create_target(new_arg);
+		}
  		// TODO:
 		//	Differences between "mm <target> <command>" and "mm <target>:<lineOfCommand> <command>", where:
 		//      - In the first case, add a new target.
@@ -147,10 +166,13 @@ class Interpreter {
  			}
 
  			// Adding command to target
- 			target.addCommand(command);
-
+ 			if(line.length() == 0) {
+ 				target.addCommand(command);
+ 			} else {
+ 				std::string::size_type sz;
+ 				target.addCommand(command, std::stoi(line, &sz));
+ 			}
  		}
-
  		_mk->add_target(target);
 
  	}

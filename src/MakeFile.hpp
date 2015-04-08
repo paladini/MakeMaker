@@ -10,7 +10,7 @@ class MakeFile {
 
  public:
 	MakeFile(std::string path) { 
-		_file = new FileManager(path);
+		_file = new FileManager(path);		
 	}
 
 	void save() {
@@ -39,7 +39,7 @@ class MakeFile {
 	}
 
 	// Deprecated. To be removed.
-	Target get_or_add_target(char* targetName) {
+	Target get_or_create_target(char* targetName) {
 		
 		// Check if already exists
 		for(int i = 0; i < _listTarget.size(); i++) {
@@ -50,7 +50,6 @@ class MakeFile {
 
 		// If not, add.
 		Target t(targetName);
-		_listTarget.push_back(t);
 		return t;
 	}
 
