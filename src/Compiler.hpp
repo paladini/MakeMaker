@@ -11,11 +11,13 @@ class Compiler {
 		_compiler = compiler;
 	}
 
-	std::string getCompiler() {
+	~Compiler() {}
+
+	std::string get_compiler() {
 		return _compiler;
 	}
 
-	void setCompiler(std::string compiler) {
+	void set_compiler(std::string compiler) {
 		_compiler = compiler;
 	}
 

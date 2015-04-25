@@ -19,7 +19,8 @@ class FileManager {
 	~FileManager() { }
 
 	void write(std::string newContent) {
-	 	std::ofstream makefile (_path.c_str());
+	 	std::ofstream makefile(_path.c_str());
+	 	std::cout << newContent << std::endl;
 	 	if(makefile.is_open()) {
   			makefile << newContent;
   			makefile.close();

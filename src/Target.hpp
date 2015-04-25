@@ -3,39 +3,42 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 #include "Command.hpp"
 
 class Target {
 
  public:
- 	Target(char* title) : _title(title) { } 
-
- 	char* getTitle() {
- 		return _title;
+ 	Target(char* title) : _title(title) {} 
+ 	Target(std::string title) : _title(&title[0]) {} // "&title[0]" returns a char*
+ 	~Target() {} 
+ 	
+ 	void add_command (Command command) {
+ 		_listCommand.push_back(command);
  	}
 
- 	void addCommand(Command* command) {
- 		_listCommand.push_back(*command);
- 	}
-
- 	void addCommand(Command* command, int line) {
+ 	void add_command (Command command, int line) {
  		int size = _listCommand.size();
  		if(size+1 < line) {
  			std::cout<<"The chosen target doesn't have that amount of commands." <<std::endl;
  			throw -1;
  		} else  if(size == 0 || (size+1) == line){
- 			_listCommand.push_back(*command);
+ 			_listCommand.push_back(command);
  		} else {
- 			_listCommand[line] = *command;
+ 			_listCommand[line] = command;
  		}
  	}
 
- 	std::vector<Command> getCommands() {
+ 	std::vector<Command> get_commands() {
  		return _listCommand;
  	}
 
- 	void setTitle(char* title) {
+ 	void set_title(char* title) {
  		_title = title;
+ 	}
+
+ 	char* get_title() {
+ 		return _title;
  	}
 
  private:

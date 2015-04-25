@@ -23,13 +23,13 @@ int main(int argc, char* argv[]) {
 	File file2("test2.cpp");
 	
 	Command line1(gpp);
-	line1.addFile(file1);
-	line1.addFile(file2);
-	line1.addFlag(flag1);
-	line1.addFlag(flag2);
+	line1.add_file(file1);
+	line1.add_file(file2);
+	line1.add_flag(flag1);
+	line1.add_flag(flag2);
 	
 	FileManager myAwesomeMakefile("makefile");
-	myAwesomeMakefile.write(line1.toCommand()); */
+	myAwesomeMakefile.write(line1.to_command()); */
 	
 		
 }

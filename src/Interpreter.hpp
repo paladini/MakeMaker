@@ -66,7 +66,7 @@ using namespace std;
 class Interpreter {
 
  public:
- 	Interpreter (int argc, char** argv) : _argc(argc), _argv(argv) { }
+ 	Interpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile")  { }
 
  	// TODO: enable that.
  	// Interpreter (string content, MakeFile mk) {
@@ -82,12 +82,12 @@ class Interpreter {
 		// std::copy(v.begin(), v.end(), _argv);
  	// }
 
- 	MakeFile* parse() {
+ 	MakeFile parse() {
 
  		// Checks if no argument was given to program.
  		if(_argc == 1) {
  			print_usage();
- 			return;
+ 			throw -1;
  		}
 
  		// Check if the action as an delete action.
@@ -115,11 +115,11 @@ class Interpreter {
 			std::string newTargetName = targetName.substr(0, pointsPosition);
 			lineNumber = std::stoi(targetName.substr(pointsPosition + 1, targetName.length()));
 			
-			target = _mk->get_or_create_target(newTargetName.c_str());
+			target = _mk.get_or_create_target(newTargetName.c_str());
 		} 
 		
 		// Generating new command
-		Command* command = new Command();
+		Command command;
 		
  		// TODO:
 		//	Differences between "mm <target> <command>" and "mm <target>:<lineOfCommand> <command>", where:
@@ -128,29 +128,29 @@ class Interpreter {
  		if (_argc > 1) {
 
  			// Get compiler
- 			Compiler* compiler = new Compiler(_argv[2]);
- 			command->setCompiler(compiler);
+ 			Compiler compiler(_argv[2]);
+ 			command.set_compiler(compiler);
 
  			// Get files
  			std::vector<File> files = parse_files();
- 			command->addFiles(files);
+ 			command.add_files(files);
 
  			// Get flags
  			int startsAt = 3 + files.size();
  			std::vector<Flag> flags = parse_flags(startsAt);
- 			command->addFlags(flags);
+ 			command.add_flags(flags);
 
  			// Adding command to target
  			if (lineNumber != -1) {
-				target.addCommand(command, lineNumber);
+				target.add_command(command, lineNumber);
 			} else {
-				target.addCommand(command);
+				target.add_command(command);
 			} 
 			
 			// Print debug
 			// print_debug();
  		}
- 		_mk->add_target(target);
+ 		_mk.add_target(target);
 
  	}
 
@@ -180,7 +180,7 @@ class Interpreter {
  		int i = startsAt;
  		std::vector<Flag> flags;
 
- 		while(i < _argc) {
+ 		while (i < _argc) {
  			std::string flg = _argv[i];
  			Flag flag(flg);
  			flags.push_back(flag);
@@ -195,7 +195,7 @@ class Interpreter {
  		std::vector<File> files;
  		std::string input = _argv[3];
 
- 		while(input[0] != '-') {
+ 		while (input[0] != '-') {
  			File file(input);
  			files.push_back(file);
  			i++;
@@ -206,20 +206,19 @@ class Interpreter {
  	}
  	
  	// TODO (not working).
- 	void print_debug() {
+ 	/* void print_debug() {
 		
-		Command command = _mk->getTarget(0).getCommands().at(0);
+		Command command = _mk.get_target(0).get_commands().at(0);
 		
-		std::cout << "Compilador: " << command.getCompiler() << endl;
-		
-		for(int i = 0; i < command.getFiles().size(); i++){
-	 		std::cout << "File[" << i << "]: " << command.getFiles().at(i).getPath() << endl;
+		std::cout << "Compilador: " << command.get_compiler() << endl;
+		for(int i = 0; i < command.get_files().size(); i++){
+	 		std::cout << "File[" << i << "]: " << command.get_files().at(i).get_path() << endl;
  		} 
 		
-		for(int i = 0; i < command.getFlags().size(); i++){
-	 		std::cout << "Flags[" << i << "]: " << command.getFlags().at(i).getFlag() << endl;
+		for(int i = 0; i < command.get_flags().size(); i++){
+	 		std::cout << "Flags[" << i << "]: " << command.get_flags().at(i).get_flag() << endl;
  		}
-	}
+	} */
 
  	void print_usage() {
  		printf(usage.c_str());
@@ -228,7 +227,7 @@ class Interpreter {
  	// Variables
  	int _argc;
  	char** _argv;
- 	MakeFile* _mk = new MakeFile("makefile");
+ 	MakeFile _mk;
 
  	// Messages (constants)
  	const std::string 

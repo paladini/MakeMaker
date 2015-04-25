@@ -10,11 +10,11 @@ class Flag {
  		_flagname = flag;
  	}
 
- 	std::string getFlag() {
+ 	std::string get_flag() {
  		return _flagname;
  	}
 
- 	void setFlag(std::string flag) {
+ 	void set_flag(std::string flag) {
  		_flagname = flag;
  	}
 

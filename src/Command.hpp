@@ -13,10 +13,7 @@ class Command {
  public:
 	
 	// Constructors
-	Command() {
-		_compiler = new Compiler("gg");
-	}
-
+	Command() : _compiler("gg") {}
 	~Command(){}
 	// TODO
 	//Command(std::vector<Flag> flags) : _flags(flags) {} 
@@ -26,19 +23,19 @@ class Command {
 
 	
 	// Methods
-	void setFiles(std::vector<File> files) {
+	void set_files(std::vector<File> files) {
 		_files = files;
 	}
 
-	void setFlags(std::vector<Flag> flags) {
+	void set_flags(std::vector<Flag> flags) {
 		_flags = flags;
 	}
 
-	/* void addFiles(std::vector<File> files) {
+	/* void add_files(std::vector<File> files) {
 		bool fileExists = 0;
 		for (int i = 0; i < files.size(); i++) {
 			for (int j = 0; j < _files.size(); j++) {
-				if ( strcasecmp(files.at(i).getPath(), _files.at(j).getFile()) ) {
+				if ( strcasecmp(files.at(i).get_path(), _files.at(j).getFile()) ) {
 					fileExists = 1;
 					break;
 				}
@@ -51,65 +48,65 @@ class Command {
 		}
 	} */
 
-	void addFlag(Flag flag) {
+	void add_flag(Flag flag) {
 		_flags.push_back(flag);
 	}
 
-	void addFlags(std::vector<Flag> flags) {
+	void add_flags(std::vector<Flag> flags) {
 		for (int i = 0; i < flags.size(); i++) {
 			_flags.push_back(flags.at(i));
 		}
 	}
 
-	void addFile(File file) {
+	void add_file(File file) {
 		_files.push_back(file);
 	}
 
-	void addFiles(std::vector<File> files) {
+	void add_files(std::vector<File> files) {
 		for (int i = 0; i < files.size(); i++) {
 			_files.push_back(files.at(i));
 		}
 	}
 	
 	// TODO
-	std::string toCommand() {
+	std::string to_command() {
 		
-		std::string command = "\t" + _compiler->getCompiler();
+		std::string command = "\t" + _compiler.get_compiler();
 		
 		// Adding files
 		for(int i = 0; i < _files.size(); i++) {
-			command += " " + _files.at(i).getPath() ;
+			command += " " + _files.at(i).get_path() ;
 		}
 		
 		// Adding flags
 		for(int i = 0; i < _flags.size(); i++) {
-			command += " " + _flags.at(i).getFlag();
+			command += " " + _flags.at(i).get_flag();
 		}
 		
 		return command;
 	}
 	
 	// Getters & Setters
-	std::vector<Flag> getFlags() {
+	std::vector<Flag> get_flags() {
 		return _flags;
 	}	
 	
-	std::vector<File> getFiles() {
+	std::vector<File> get_files() {
 		return _files;
 	}
 	
-	void setCompiler(Compiler *compiler) {
+	void set_compiler(Compiler compiler) {
 		_compiler = compiler;
 	}
 	
-	Compiler* getCompiler() {
+	Compiler get_compiler() {
 		return _compiler;
 	}
 	
  private:
 	std::vector<Flag> _flags;
 	std::vector<File> _files;
-	Compiler *_compiler;
+	Compiler _compiler;
 };
 
 #endif

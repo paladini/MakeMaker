@@ -11,11 +11,11 @@ class File {
 	}
 	~File(){ } 
 
-	void setPath(std::string path) {
+	void set_path(std::string path) {
 		_path = path;
 	}
 
-	std::string getPath() {
+	std::string get_path() {
 		return _path;
 	}
 
