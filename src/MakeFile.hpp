@@ -12,12 +12,6 @@ class MakeFile {
 
  public:
 	MakeFile(std::string path) : _file(path) {}
-	/* MakeFile(std::string path, bool overwrite) : _file(path) {
-		if (!overwrite) {
-			_listTarget = 
-		}
-	} */
-
 	~MakeFile() {} 
 
 	void save () {
@@ -56,11 +50,8 @@ class MakeFile {
 		_listTarget.pop_back();
 	}
 
-	// Deprecated. To be removed.
-	Target get_or_create_target(std::string targetNameString) {
-		char* targetName = &targetNameString[0];
-
-		// Check if already exists
+	// Review it. Before it was marked as "deprecated", but I think it should not be deprecated.
+	Target get_or_create_target(char* targetName) {
 		for(int i = 0; i < _listTarget.size(); i++) {
 			if ( strcasecmp((_listTarget.at(i)).get_title(), targetName) ) {
 				return _listTarget.at(i);
@@ -86,9 +77,7 @@ class MakeFile {
 
  	bool check_target_existence(Target t) {
  		for (int i = 0; i < _listTarget.size(); i++) {
- 			//std::cout << "t(title): " << std::string(t.get_title()) << std::endl;
- 			//std::cout << "_listTarget(i)(title): " << std::string(_listTarget.at(i).get_title()) << std::endl;
- 			if ( strcasecmp(t.get_title(), _listTarget.at(i).get_title()) ) {
+ 			if (!strcasecmp(t.get_title(), (_listTarget.at(i)).get_title()) ) {
  				return true;
  			}
  		}

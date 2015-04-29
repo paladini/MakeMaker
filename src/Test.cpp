@@ -93,12 +93,24 @@ void test_makefile_memory_delete() {
 
 void test_makefile_memory_add_target_twice() {
 	MakeFile mk("makefile");
+	int exception = 0;
 
 	Target t1("test");
-	mk.add_target(t1);
-	mk.add_target(t1);
+	try {
+		mk.add_target(t1);
+		mk.add_target(t1);
+	} catch (int e) {
+		exception = e;
+	}
 
-	std::cout << "test_makefile_memory_add_target_twice: OK!" << std::endl;
+	if(mk.get_targets().size() != 1) {
+		std::cout << "###### ERROR: test_makefile_memory_add_target_twice" << std::endl;
+		throw -1;
+	}
+
+	if (exception == -1) {
+		std::cout << "test_makefile_memory_add_target_twice: OK!" << std::endl;
+	}
 }
 
 void test_makefile_memory_add_diff_target_with_same_name() {

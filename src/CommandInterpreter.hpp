@@ -106,16 +106,17 @@ class CommandInterpreter {
  	void parse_add() { 
 
  		int lineNumber = -1;
- 		std::string targetName = std::string(_argv[1]);
-		Target target(targetName.c_str());
-		
+		Target target(_argv[1]);
+ 		std::string targetName = std::string(target.get_title());
+
 		// Converting myTarget:myLine into myTarget, if ":" exists.
 		int pointsPosition = targetName.find_last_of(":");
 		if(pointsPosition != -1) {
 			std::string newTargetName = targetName.substr(0, pointsPosition);
 			lineNumber = std::stoi(targetName.substr(pointsPosition + 1, targetName.length()));
 			
-			target = _mk.get_or_create_target(newTargetName.c_str());
+			char* arg = const_cast<char*>(newTargetName.c_str());
+			target = _mk.get_or_create_target(arg);
 		} 
 		
 		// Generating new command
