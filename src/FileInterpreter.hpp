@@ -12,7 +12,10 @@ class FileInterpreter {
 	FileInterpreter (std::string path) : _manager(path) { }
 
 	std::vector<Target> parseFile() {
-		return foundTargets(_manager.read());
+		if(_manager.already_exists_a_makefile())
+			return foundTargets(_manager.read());
+		std::vector<Target> empty;
+		return empty;
 	}
 
  private:
@@ -24,11 +27,14 @@ class FileInterpreter {
     	std::string line, newTargetName;
 		std::vector<Target> targets;
 		int pointsPosition, actual = 0;
+    	//char* name; 
     	while (std::getline(reader, line)) {                                    // while there are lines to get in the content
     		pointsPosition = line.find_last_of(":");
     		if((line.at(0) != '\t') && (pointsPosition != -1)) {                // if the first character isn't a 'tab' and there are a colon in the line
     			newTargetName = line.substr(0, pointsPosition);
-				targets.push_back(Target(newTargetName.c_str()));               // the text of this line, excluding the colon, is a target
+    			//name = (char*) malloc (newTargetName.size() + 1);
+    			//memcpy(name, newTargetName.c_str(), newTargetName.size() + 1)
+				targets.push_back(Target(&newTargetName[0]));              			 // the text of this line, excluding the colon, is a target
     		} else {
     			targets.at(actual).add_command(readCommand(line));               // otherwise, it is a command and we must parse this accurately
     			actual++;

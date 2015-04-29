@@ -7,16 +7,18 @@
 #include <iostream>
 #include "Target.hpp"
 #include "FileManager.hpp"
+#include "FileInterpreter.hpp"
 
 class MakeFile {
 
  public:
-	MakeFile(std::string path) : _file(path) {}
-	/* MakeFile(std::string path, bool overwrite) : _file(path) {
-		if (!overwrite) {
-			_listTarget = 
+	MakeFile(std::string path) : _file(path) {	}
+	MakeFile(std::string path, bool overwrite) : _file(path) {
+		if(!overwrite) {
+			FileInterpreter fi(path);
+			_listTarget = fi.parseFile();
 		}
-	} */
+	}
 
 	~MakeFile() {} 
 

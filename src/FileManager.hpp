@@ -1,5 +1,5 @@
-#ifndef FILEMANAGER_H_
-#define FILEMANAGER_H_
+#ifndef FILEMANAGER_HPP_
+#define FILEMANAGER_HPP_
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -9,14 +9,17 @@ class FileManager {
  public:
 	FileManager() { }
 	FileManager(std::string path) {
-	 	_path = path;
+		_path = path;
 	 	if(!verify()){
 	 		create();
+	 	} else {
+	 		!_exists;
 	 	}
-	}
+	} 
 	 
 	// TODO
-	~FileManager() { }
+	~FileManager() {
+	}
 
 	void write(std::string newContent) {
 	 	std::ofstream makefile(_path.c_str());
@@ -41,6 +44,10 @@ class FileManager {
  		}
  		throw -1;
 	}
+
+	bool already_exists_a_makefile() {
+		return _exists;
+	}
 	 
  private:
  
@@ -55,7 +62,7 @@ class FileManager {
   		make.close();
 	}
 	 
-		
+	bool _exists = false;
 	std::string _path;
 };
 #endif

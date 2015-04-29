@@ -66,7 +66,7 @@
 class CommandInterpreter {
 
  public:
- 	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile")  { }
+ 	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile", false)  { }
 
  	// TODO: enable that.
  	// Interpreter (string content, MakeFile mk) {
