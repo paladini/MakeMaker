@@ -12,6 +12,7 @@
 class MakeFile {
 
  public:
+
 	MakeFile(std::string path) : _file(path) {	}
 	MakeFile(std::string path, bool overwrite) : _file(path) {
 		if(!overwrite) {
@@ -54,15 +55,27 @@ class MakeFile {
 		}
 	}
 
+	void add_target(Target target, int overwrite) {
+		if (check_target_existence(target)) {
+			if (overwrite) {
+				remove_target_at(get_target_position(target));
+			} else {
+				throw -1;
+			}
+		}
+		_listTarget.push_back(target);
+	}
+
 	void remove_target() {
 		_listTarget.pop_back();
 	}
 
-	// Deprecated. To be removed.
-	Target get_or_create_target(std::string targetNameString) {
-		char* targetName = &targetNameString[0];
+	void remove_target_at(int pos) {
+		_listTarget.erase(_listTarget.begin() + pos);
+	}
 
-		// Check if already exists
+	// Review it. Before it was marked as "deprecated", but I think it should not be deprecated.
+	Target get_or_create_target(char* targetName) {
 		for(int i = 0; i < _listTarget.size(); i++) {
 			if ( strcasecmp((_listTarget.at(i)).get_title(), targetName) ) {
 				return _listTarget.at(i);
@@ -86,11 +99,17 @@ class MakeFile {
  	FileManager _file;
  	std::vector<Target> _listTarget;
 
+ 	int get_target_position(Target target) {
+ 		for (int i = 0; i < _listTarget.size(); i++) {
+ 			if (&target == &_listTarget.at(i)) {
+ 				return i;
+ 			}
+ 		}
+ 	}
+
  	bool check_target_existence(Target t) {
  		for (int i = 0; i < _listTarget.size(); i++) {
- 			//std::cout << "t(title): " << std::string(t.get_title()) << std::endl;
- 			//std::cout << "_listTarget(i)(title): " << std::string(_listTarget.at(i).get_title()) << std::endl;
- 			if ( strcasecmp(t.get_title(), _listTarget.at(i).get_title()) ) {
+ 			if (!strcasecmp(t.get_title(), (_listTarget.at(i)).get_title()) ) {
  				return true;
  			}
  		}
