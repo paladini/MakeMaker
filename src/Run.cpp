@@ -1,6 +1,6 @@
 #include "Command.hpp"
 #include "FileManager.hpp"
-#include "Interpreter.hpp"
+#include "CommandInterpreter.hpp"
 #include "MakeFile.hpp"
 
 int main(int argc, char* argv[]) {
@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
 	// Creating a makefile
 	//MakeFile mk("makefile");
 
-	Interpreter interpreter(argc, argv);
+	CommandInterpreter interpreter(argc, argv);
 	MakeFile* mk = interpreter.parse();
 
 	mk->save();

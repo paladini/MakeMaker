@@ -48,8 +48,8 @@
   
 */
 
-#ifndef INTERPRETER_HPP_
-#define INTERPRETER_HPP_
+#ifndef COMMAND_INTERPRETER_HPP_
+#define COMMAND_INTERPRETER_HPP_
 
 #include <stdio.h>
 #include <iostream>
@@ -61,12 +61,12 @@
 #include "Command.hpp"
 // #include <cstring>
 
-using namespace std;
+// using namespace std;
 
-class Interpreter {
+class CommandInterpreter {
 
  public:
- 	Interpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile")  { }
+ 	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile")  { }
 
  	// TODO: enable that.
  	// Interpreter (string content, MakeFile mk) {
@@ -106,7 +106,7 @@ class Interpreter {
  	void parse_add() { 
 
  		int lineNumber = -1;
- 		std::string targetName = string(_argv[1]);
+ 		std::string targetName = std::string(_argv[1]);
 		Target target(targetName.c_str());
 		
 		// Converting myTarget:myLine into myTarget, if ":" exists.
@@ -171,7 +171,7 @@ class Interpreter {
  		} else if(_argv[4] == "-F") {
  			return;
  		} else {
- 			cout << "Problem!" << endl;
+ 			std::cout << "Problem!" << std::endl; // deve ser um throw, não um cout.
  		}
 
  	}

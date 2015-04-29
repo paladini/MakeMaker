@@ -9,8 +9,10 @@
 class Target {
 
  public:
- 	Target(char* title) : _title(title) {} 
- 	Target(std::string title) : _title(&title[0]) {} // "&title[0]" returns a char*
+ 	// Target(std::string title) : _title(&title[0]) {} // "&title[0]" returns a char*
+ 	Target(std::string title) {
+ 		_title = (char*)title.c_str();
+ 	}
  	~Target() {} 
  	
  	void add_command (Command command) {

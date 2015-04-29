@@ -1,6 +1,6 @@
 #include "Command.hpp"
 #include "FileManager.hpp"
-#include "Interpreter.hpp"
+#include "CommandInterpreter.hpp"
 #include "MakeFile.hpp"
 #include <iostream>
 
@@ -45,6 +45,90 @@ void test_file_creation() {
 //  WEAK TESTS
 //  Interaction between objects and file generation.
 //
+void test_makefile_memory_insert() {
+	MakeFile mk("makefile");
+
+	// Creating targets
+	Target t1("test");
+	Target t2("compile");
+
+	// Adding targets to makefile
+	mk.add_target(t1);
+	mk.add_target(t2);
+
+	if(mk.get_targets().size() != 2) {
+		std::cout << "###### ERROR: test_makefile_memory_insert" << std::endl;
+		throw -1;
+	}
+
+	std::cout << "test_makefile_memory_insert: OK!" << std::endl;
+}
+
+void test_makefile_memory_delete() {
+	MakeFile mk("makefile");
+
+	// Creating targets
+	Target t1("test");
+	Target t2("compile");
+	Target t3("teste2");
+	Target t4("release");
+
+	// Adding targets to makefile
+	mk.add_target(t1);
+	mk.add_target(t2);
+	mk.add_target(t3);
+	mk.add_target(t4);
+
+	mk.remove_target();
+	mk.remove_target();
+	mk.remove_target();
+
+	if(mk.get_targets().size() != 1) {
+		std::cout << "###### ERROR: test_makefile_memory_delete" << std::endl;
+		throw -1;
+	}
+
+	std::cout << "test_makefile_memory_delete: OK!" << std::endl;
+}
+
+void test_makefile_memory_add_target_twice() {
+	MakeFile mk("makefile");
+
+	Target t1("test");
+	mk.add_target(t1);
+	mk.add_target(t1);
+
+	std::cout << "test_makefile_memory_add_target_twice: OK!" << std::endl;
+}
+
+void test_makefile_memory_add_diff_target_with_same_name() {
+	MakeFile mk("makefile");
+	int error = 0;
+	Target t1("test");
+	Target t2("test");
+
+	try {
+		mk.add_target(t1);
+		mk.add_target(t2);	
+	} catch (int e) {
+		error = e;
+	}
+
+	// The problem is that target isn't creating a valid title (it's empty).
+	// Probably related to the Target constructor.
+
+
+	if(mk.get_targets().size() != 1) {
+		std::cout << "###### ERROR: test_makefile_memory_add_diff_target_with_same_name" << std::endl;
+		throw -1;
+	}
+
+	if (error == -1) {
+		std::cout << "test_makefile_memory_add_diff_target_with_same_name: OK!" << std::endl;
+	}
+	
+}
+
 /**
 
 	This test should generate the following makefile:
@@ -58,7 +142,7 @@ void test_file_creation() {
 		g++ temp.hpp temp.hpp -h -o
 
 */
-void test_makefile_create() {
+void test_makefile_disk() {
 
 	// Creating Makefile.
 	MakeFile mk("makefile");
@@ -133,6 +217,10 @@ int main(int argc, char* argv[]) {
 
 	// Weak tests
 	std::cout << "\n# Weak tests (2/2): " << std::endl;
-	test_makefile_create();
+	test_makefile_disk();
+	test_makefile_memory_insert();
+	test_makefile_memory_delete();
+	test_makefile_memory_add_target_twice();
+	test_makefile_memory_add_diff_target_with_same_name();
 
 }

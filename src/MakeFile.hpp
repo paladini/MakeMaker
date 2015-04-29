@@ -12,6 +12,12 @@ class MakeFile {
 
  public:
 	MakeFile(std::string path) : _file(path) {}
+	/* MakeFile(std::string path, bool overwrite) : _file(path) {
+		if (!overwrite) {
+			_listTarget = 
+		}
+	} */
+
 	~MakeFile() {} 
 
 	void save () {
@@ -39,16 +45,21 @@ class MakeFile {
 
 	// TODO: implementar substituição de comandos
 	void add_target(Target target) {
-		_listTarget.push_back(target);
+		if (check_target_existence(target)) {
+			throw -1;
+		} else {
+			_listTarget.push_back(target);
+		}
 	}
-	
-	Target get_target(int pos) {
-		return _listTarget.at(pos);
+
+	void remove_target() {
+		_listTarget.pop_back();
 	}
 
 	// Deprecated. To be removed.
-	Target get_or_create_target(char* targetName) {
-		
+	Target get_or_create_target(std::string targetNameString) {
+		char* targetName = &targetNameString[0];
+
 		// Check if already exists
 		for(int i = 0; i < _listTarget.size(); i++) {
 			if ( strcasecmp((_listTarget.at(i)).get_title(), targetName) ) {
@@ -61,9 +72,28 @@ class MakeFile {
 		return t;
 	}
 
+	std::vector<Target> get_targets() {
+		return _listTarget;
+	}
+
+	Target get_target(int pos) {
+		return _listTarget.at(pos);
+	}
+
  private:
  	FileManager _file;
  	std::vector<Target> _listTarget;
+
+ 	bool check_target_existence(Target t) {
+ 		for (int i = 0; i < _listTarget.size(); i++) {
+ 			//std::cout << "t(title): " << std::string(t.get_title()) << std::endl;
+ 			//std::cout << "_listTarget(i)(title): " << std::string(_listTarget.at(i).get_title()) << std::endl;
+ 			if ( strcasecmp(t.get_title(), _listTarget.at(i).get_title()) ) {
+ 				return true;
+ 			}
+ 		}
+ 		return false;
+ 	}
 
 };
 #endif
