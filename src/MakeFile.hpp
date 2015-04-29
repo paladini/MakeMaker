@@ -46,8 +46,23 @@ class MakeFile {
 		}
 	}
 
+	void add_target(Target target, int overwrite) {
+		if (check_target_existence(target)) {
+			if (overwrite) {
+				remove_target_at(get_target_position(target));
+			} else {
+				throw -1;
+			}
+		}
+		_listTarget.push_back(target);
+	}
+
 	void remove_target() {
 		_listTarget.pop_back();
+	}
+
+	void remove_target_at(int pos) {
+		_listTarget.erase(_listTarget.begin() + pos);
 	}
 
 	// Review it. Before it was marked as "deprecated", but I think it should not be deprecated.
@@ -74,6 +89,14 @@ class MakeFile {
  private:
  	FileManager _file;
  	std::vector<Target> _listTarget;
+
+ 	int get_target_position(Target target) {
+ 		for (int i = 0; i < _listTarget.size(); i++) {
+ 			if (&target == &_listTarget.at(i)) {
+ 				return i;
+ 			}
+ 		}
+ 	}
 
  	bool check_target_existence(Target t) {
  		for (int i = 0; i < _listTarget.size(); i++) {
