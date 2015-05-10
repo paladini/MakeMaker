@@ -91,7 +91,7 @@ class CommandInterpreter {
  		}
 
  		// Check if the action as an delete action.
- 		if(_argv[1] == "!") {
+ 		if(!strcasecmp(_argv[1],"!")) {
  			parse_delete();
  		} else {
  			parse_add();
@@ -109,15 +109,8 @@ class CommandInterpreter {
 		Target target(_argv[1]);
  		std::string targetName = std::string(target.get_title());
 
-		// Converting myTarget:myLine into myTarget, if ":" exists.
-		int pointsPosition = targetName.find_last_of(":");
-		if(pointsPosition != -1) {
-			std::string newTargetName = targetName.substr(0, pointsPosition);
-			lineNumber = std::stoi(targetName.substr(pointsPosition + 1, targetName.length()));
-			
-			char* arg = const_cast<char*>(newTargetName.c_str());
-			target = _mk.get_or_create_target(arg);
-		} 
+		lineNumber = get_line_number(targetName);
+		target = _mk.get_or_create_target(get_target_name(targetName));
 		
 		// Generating new command
 		Command command;
@@ -158,8 +151,12 @@ class CommandInterpreter {
  	void parse_delete() {
 
  		// If only target was given, delete target.
+ 		// Currently this isn't working with <target>:<line>.
  		if(_argc == 3) {
- 			// TODO Delete the given target.
+ 			char* targetName = get_target_name(std::string(_argv[2]));
+ 			Target t(targetName);
+
+ 			_mk.remove_target(t);
  			return;
  		}
 
@@ -205,7 +202,25 @@ class CommandInterpreter {
 
  		return files;
  	}
- 	
+
+ 	int get_line_number(std::string targetName) {
+ 		int temp = targetName.find_last_of(":");
+ 		if (temp != -1) {
+ 			temp = std::stoi(targetName.substr(temp + 1, targetName.length()));
+ 		}
+ 		return temp;
+ 	}
+
+ 	char* get_target_name(std::string targetName) {
+ 		int temp = targetName.find_last_of(":");
+ 		if (temp != -1) {
+	 		std::string newTargetName = targetName.substr(0, temp);
+	 		return const_cast<char*>(newTargetName.c_str());
+	 	} else {
+	 		return const_cast<char*>(targetName.c_str());
+	 	}
+ 	}	
+
  	// TODO (not working).
  	/* void print_debug() {
 		

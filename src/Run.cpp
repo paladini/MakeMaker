@@ -7,11 +7,10 @@ int main(int argc, char* argv[]) {
 	
 	// Creating a makefile
 	//MakeFile mk("makefile");
-
 	CommandInterpreter interpreter(argc, argv);
-	MakeFile* mk = interpreter.parse();
+	MakeFile mk = interpreter.parse();
 
-	mk->save();
+	mk.save();
 
 	/* Usage example:
 	Flag flag1("-output");

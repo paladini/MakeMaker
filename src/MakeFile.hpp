@@ -13,7 +13,11 @@ class MakeFile {
 
  public:
 
-	MakeFile(std::string path) : _file(path) {	}
+ 	// Antes não chamava esses dois métodos aqui, talvez se faça necessário removê-los.
+	MakeFile(std::string path) : _file(path) {
+		FileInterpreter fi(path);
+		_listTarget = fi.parseFile();
+	}
 	MakeFile(std::string path, bool overwrite) : _file(path) {
 		if(!overwrite) {
 			FileInterpreter fi(path);
@@ -58,7 +62,7 @@ class MakeFile {
 	void add_target(Target target, int overwrite) {
 		if (check_target_existence(target)) {
 			if (overwrite) {
-				remove_target_at(get_target_position(target));
+				remove_target(get_target_position(target));
 			} else {
 				throw -1;
 			}
@@ -70,14 +74,23 @@ class MakeFile {
 		_listTarget.pop_back();
 	}
 
-	void remove_target_at(int pos) {
+	void remove_target(Target t) {
+		int position = get_target_position(t);
+		if (position != -1) {
+			remove_target();
+		}
+	}
+
+	void remove_target(int pos) {
 		_listTarget.erase(_listTarget.begin() + pos);
 	}
 
 	// Review it. Before it was marked as "deprecated", but I think it should not be deprecated.
 	Target get_or_create_target(char* targetName) {
+		Target temp(targetName);
 		for(int i = 0; i < _listTarget.size(); i++) {
-			if ( strcasecmp((_listTarget.at(i)).get_title(), targetName) ) {
+			if (_listTarget.at(i) == temp) {
+			// if (!strcasecmp((_listTarget.at(i)).get_title(), targetName) ) {
 				return _listTarget.at(i);
 			}
 		}
@@ -91,6 +104,16 @@ class MakeFile {
 		return _listTarget;
 	}
 
+	Target get_target(char* targetName) {
+		/* for(int i = 0; i < _listTarget.size(); i++) {
+			if ( !strcasecmp((_listTarget.at(i)).get_title(), targetName) ) {
+				return &_listTarget.at(i);
+			}
+		}
+		return NULL; */
+
+	}
+
 	Target get_target(int pos) {
 		return _listTarget.at(pos);
 	}
@@ -99,21 +122,23 @@ class MakeFile {
  	FileManager _file;
  	std::vector<Target> _listTarget;
 
- 	int get_target_position(Target target) {
+ 	int get_target_position(Target t) {
  		for (int i = 0; i < _listTarget.size(); i++) {
- 			if (&target == &_listTarget.at(i)) {
+ 			// if (!strcasecmp(t.get_title(), (_listTarget.at(i)).get_title()) ) {
+ 			if (t == _listTarget.at(i)) {
  				return i;
  			}
  		}
+ 		return -1;
  	}
 
  	bool check_target_existence(Target t) {
- 		for (int i = 0; i < _listTarget.size(); i++) {
- 			if (!strcasecmp(t.get_title(), (_listTarget.at(i)).get_title()) ) {
- 				return true;
- 			}
+ 		int i = get_target_position(t);
+ 		if (i == -1) {
+ 			return false;
+ 		} else {
+ 			return true;
  		}
- 		return false;
  	}
 
 };
