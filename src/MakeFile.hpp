@@ -122,9 +122,10 @@ class MakeFile {
  	FileManager _file;
  	std::vector<Target> _listTarget;
 
- 	int get_target_position(Target t) {
+ 	int get_target_position(Target t) { 
  		for (int i = 0; i < _listTarget.size(); i++) {
  			// if (!strcasecmp(t.get_title(), (_listTarget.at(i)).get_title()) ) {
+ 			std::cout<<_listTarget.at(i).get_title()<<std::endl;
  			if (t == _listTarget.at(i)) {
  				return i;
  			}
@@ -133,12 +134,7 @@ class MakeFile {
  	}
 
  	bool check_target_existence(Target t) {
- 		int i = get_target_position(t);
- 		if (i == -1) {
- 			return false;
- 		} else {
- 			return true;
- 		}
+ 		return get_target_position(t) != -1;
  	}
 
 };

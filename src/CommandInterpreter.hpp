@@ -66,7 +66,7 @@
 class CommandInterpreter {
 
  public:
- 	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile", false)  { }
+ 	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile", false)  { } /* ----------- the problem may be originated here ----------- */ 
 
  	// TODO: enable that.
  	// Interpreter (string content, MakeFile mk) {
@@ -83,6 +83,8 @@ class CommandInterpreter {
  	// }
 
  	MakeFile parse() {
+ 		/* ----------- here things get serious ----------- */
+ 		std::cout<<_mk.get_target(0).get_title()<<std::endl;
 
  		// Checks if no argument was given to program.
  		if(_argc == 1) {
@@ -96,7 +98,7 @@ class CommandInterpreter {
  		} else {
  			parse_add();
  		} 
-
+ 		_mk.save();
  		return _mk;
  	}
 
@@ -144,6 +146,7 @@ class CommandInterpreter {
 			// Print debug
 			// print_debug();
  		}
+ 		/* ----------- here it's already madness ----------- */
  		_mk.add_target(target);
 
  	}

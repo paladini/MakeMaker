@@ -42,17 +42,12 @@ class Target {
  	}
 
  	// It's necessary implement this method this way because strcasecmp can return values < 0 or > 0 (e.g: 1,2,-2).
- 	inline bool operator==(const Target& rhs) const {
- 		if(!strcasecmp(this->_title,rhs._title)) {
- 			return true;
- 		}
- 		return false;
- 	}
-	inline bool operator!=(const Target& rhs) const {return !operator==(rhs);}
+ 	inline bool operator==(const Target& rhs) const {return !(strcasecmp(this->_title,rhs._title));}
+	inline bool operator!=(const Target& rhs) const {return !(operator==(rhs));}
 	inline bool operator< (const Target& rhs) const {return this->_title < rhs._title;}
 	inline bool operator> (const Target& rhs) const {return this->_title > rhs._title;} 
-	inline bool operator<=(const Target& rhs) const {return !operator> (rhs);}
-	inline bool operator>=(const Target& rhs) const {return !operator< (rhs);}
+	inline bool operator<=(const Target& rhs) const {return !(operator> (rhs));}
+	inline bool operator>=(const Target& rhs) const {return !(operator< (rhs));}
 
  private:
  	char* _title;

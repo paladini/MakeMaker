@@ -13,7 +13,7 @@ class FileManager {
 	 	if(!verify()){
 	 		create();
 	 	} else {
-	 		!_exists;
+	 		_exists = true;
 	 	}
 	} 
 	 

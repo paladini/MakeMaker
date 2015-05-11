@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 	CommandInterpreter interpreter(argc, argv);
 	MakeFile mk = interpreter.parse();
 
-	mk.save();
+	
 
 	/* Usage example:
 	Flag flag1("-output");
