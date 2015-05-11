@@ -83,9 +83,6 @@ class CommandInterpreter {
  	// }
 
  	MakeFile parse() {
- 		/* ----------- here things get serious ----------- */
- 		std::cout<<_mk.get_target(0).get_title()<<std::endl;
-
  		// Checks if no argument was given to program.
  		if(_argc == 1) {
  			print_usage();

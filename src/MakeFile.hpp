@@ -2,7 +2,7 @@
 #define MAKEFILE_HPP_
 
 #include <string>
-#include <strings.h>
+// #include <strings.h>
 #include <vector>
 #include <iostream>
 #include "Target.hpp"
@@ -23,17 +23,23 @@ class MakeFile {
 			FileInterpreter fi(path);
 			_listTarget = fi.parseFile();
 		}
+
+		std::cout << "Nome do target no construtor do Makefile: " << _listTarget.at(0).get_title() << std::endl;
 	}
 
 	~MakeFile() {} 
 
 	void save () {
-		std::string text; 
+		_file.write(to_string());
+	}
+
+	std::string to_string() {
+		std::string text = ""; 
 
 		// Load all targets and put everything inside a string.
 		for(int i = 0; i < _listTarget.size(); i++) {
 			Target that = _listTarget.at(i);
-
+			
 			std::string temp = std::string(that.get_title()) + ":";
 			std::vector<Command> listCommands = that.get_commands();
 			for(int j = 0; j < listCommands.size(); j++) {
@@ -46,8 +52,7 @@ class MakeFile {
 			}
 		}
 
-		// Saving to the file
-		_file.write(text);
+		return text;
 	}
 
 	// TODO: implementar substituição de comandos
