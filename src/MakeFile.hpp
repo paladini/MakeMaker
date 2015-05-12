@@ -125,7 +125,6 @@ class MakeFile {
  	int get_target_position(Target t) { 
  		for (int i = 0; i < _listTarget.size(); i++) {
  			// if (!strcasecmp(t.get_title(), (_listTarget.at(i)).get_title()) ) {
- 			std::cout<<_listTarget.at(i).get_title()<<std::endl;
  			if (t == _listTarget.at(i)) {
  				return i;
  			}

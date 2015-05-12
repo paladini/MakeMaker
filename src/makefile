@@ -1,2 +1,2 @@
-brazil:
-	Brazil.cpp Hue.hpp br.hpp -o
+test:
+	g++ main.cpp -o main
