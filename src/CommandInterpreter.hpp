@@ -83,8 +83,6 @@ class CommandInterpreter {
  	// }
 
  	MakeFile parse() {
- 		/* ----------- here things get serious ----------- */
-
  		// Checks if no argument was given to program.
  		if(_argc == 1) {
  			print_usage();
@@ -111,7 +109,8 @@ class CommandInterpreter {
  		std::string targetName = std::string(target.get_title());
 
 		lineNumber = get_line_number(targetName);
-		target = _mk.get_or_create_target(get_target_name(targetName));
+		char* name = get_target_name(targetName);
+		target = _mk.get_or_create_target(name);
 		
 		// Generating new command
 		Command command;
@@ -145,8 +144,7 @@ class CommandInterpreter {
 			// Print debug
 			// print_debug();
  		}
- 		/* ----------- here it's already madness ----------- */
- 		_mk.add_target(target);
+ 		_mk.add_target(target, lineNumber != -1);
 
  	}
 
@@ -217,10 +215,13 @@ class CommandInterpreter {
  		int temp = targetName.find_last_of(":");
  		if (temp != -1) {
 	 		std::string newTargetName = targetName.substr(0, temp);
-	 		return const_cast<char*>(newTargetName.c_str());
-	 	} else {
-	 		return const_cast<char*>(targetName.c_str());
-	 	}
+	 		char* name = (char*) malloc (newTargetName.size() + 1);
+    		memcpy(name, newTargetName.c_str(), newTargetName.size() + 1);
+	 		return name;//return const_cast<char*>(newTargetName.c_str());
+	 	} 
+	 	char* name = (char*) malloc (targetName.size() + 1);
+    	memcpy(name, targetName.c_str(), targetName.size() + 1);
+    	return name;//return const_cast<char*>(targetName.c_str());
  	}	
 
  	// TODO (not working).

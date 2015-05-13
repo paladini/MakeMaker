@@ -14,6 +14,7 @@ class Command {
 	
 	// Constructors
 	Command() : _compiler("gg") {}
+	Command(std::string compiler) : _compiler(compiler) {}
 	~Command(){}
 	// TODO
 	//Command(std::vector<Flag> flags) : _flags(flags) {} 

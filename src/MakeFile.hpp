@@ -2,7 +2,7 @@
 #define MAKEFILE_HPP_
 
 #include <string>
-#include <strings.h>
+// #include <strings.h>
 #include <vector>
 #include <iostream>
 #include "Target.hpp"
@@ -15,25 +15,34 @@ class MakeFile {
 
  	// Antes não chamava esses dois métodos aqui, talvez se faça necessário removê-los.
 	MakeFile(std::string path) : _file(path) {
-		FileInterpreter fi(path);
-		_listTarget = fi.parseFile();
+		FileInterpreter fi(_file);
+		std::vector<Target> temporary;
+		fi.parseFile(&temporary);
+		_listTarget = temporary;
 	}
 	MakeFile(std::string path, bool overwrite) : _file(path) {
 		if(!overwrite) {
-			FileInterpreter fi(path);
-			_listTarget = fi.parseFile();
+			FileInterpreter fi(_file);
+			std::vector<Target> temporary;
+			fi.parseFile(&temporary);
+			_listTarget = temporary;
 		}
+
 	}
 
 	~MakeFile() {} 
 
 	void save () {
-		std::string text; 
+		_file.write(to_string());
+	}
+
+	std::string to_string() {
+		std::string text = ""; 
 
 		// Load all targets and put everything inside a string.
 		for(int i = 0; i < _listTarget.size(); i++) {
 			Target that = _listTarget.at(i);
-
+			
 			std::string temp = std::string(that.get_title()) + ":";
 			std::vector<Command> listCommands = that.get_commands();
 			for(int j = 0; j < listCommands.size(); j++) {
@@ -46,8 +55,7 @@ class MakeFile {
 			}
 		}
 
-		// Saving to the file
-		_file.write(text);
+		return text;
 	}
 
 	// TODO: implementar substituição de comandos
@@ -59,7 +67,7 @@ class MakeFile {
 		}
 	}
 
-	void add_target(Target target, int overwrite) {
+	void add_target(Target target, bool overwrite) {
 		if (check_target_existence(target)) {
 			if (overwrite) {
 				remove_target(get_target_position(target));
@@ -87,7 +95,7 @@ class MakeFile {
 
 	// Review it. Before it was marked as "deprecated", but I think it should not be deprecated.
 	Target get_or_create_target(char* targetName) {
-		Target temp(targetName);
+		Target temp = Target(targetName);
 		for(int i = 0; i < _listTarget.size(); i++) {
 			if (_listTarget.at(i) == temp) {
 			// if (!strcasecmp((_listTarget.at(i)).get_title(), targetName) ) {
