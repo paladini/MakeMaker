@@ -59,42 +59,29 @@
 #include "MakeFile.hpp"
 #include "Target.hpp"
 #include "Command.hpp"
-// #include <cstring>
-
-// using namespace std;
 
 class CommandInterpreter {
 
  public:
  	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile", false)  {} /* ----------- the problem may be originated here ----------- */ 
 
- 	// TODO: enable that.
- 	// Interpreter (string content, MakeFile mk) {
- 	// 	_mk = mk;
-
-	    // Converting string (aka "My string with spaces" -> ['my', 'string', 'with', 'spaces']) into vector of chars.
-		// vector<char> v(content.begin(), content.end());
-
-		// // Get argc
-		// _argc = v.size();
-
-		// // Convert vector<char> to char* [].
-		// std::copy(v.begin(), v.end(), _argv);
- 	// }
-
  	MakeFile parse() {
- 		// Checks if no argument was given to program.
- 		if(_argc == 1) {
+ 		if(_argc <= 2) {
  			print_usage();
  			throw -1;
  		}
 
- 		// Check if the action as an delete action.
- 		if(!strcasecmp(_argv[1],"!")) {
- 			parse_delete();
- 		} else {
+ 		if(!strcasecmp(_argv[1], "add")) {
  			parse_add();
- 		} 
+ 		}
+ 		else if(!strcasecmp(_argv[1], "remove"))
+ 			parse_delete();
+ 		else if(!strcasecmp(_argv[1], "edit"))
+ 			parse_edit();
+ 		//else if(strcasecmp(_argv[1], "list"))
+ 		//	parse_list();
+ 		//else throw -2;
+
  		_mk.save();
  		return _mk;
  	}
@@ -105,47 +92,34 @@ class CommandInterpreter {
  	void parse_add() { 
 
  		int lineNumber = -1;
-		Target target(_argv[1]);
+		Target target(_argv[2]);
  		std::string targetName = std::string(target.get_title());
 
-		lineNumber = get_line_number(targetName);
 		char* name = get_target_name(targetName);
 		target = _mk.get_or_create_target(name);
 		
-		// Generating new command
 		Command command;
 		
  		// TODO:
 		//	Differences between "mm <target> <command>" and "mm <target>:<lineOfCommand> <command>", where:
 		//      - In the first case, add a new target.
 		//      - In the second case, overwrites a command (given by the "lineOfCommand"). 
- 		if (_argc > 2) {
+ 		if (_argc > 3) {
 
- 			// Get compiler
- 			Compiler compiler(_argv[2]);
+ 			Compiler compiler(_argv[3]);
  			command.set_compiler(compiler);
 
- 			// Get files
  			std::vector<File> files = parse_files();
  			command.add_files(files);
 
- 			// Get flags
- 			int startsAt = 3 + files.size();
+ 			int startsAt = 4 + files.size();
  			std::vector<Flag> flags = parse_flags(startsAt);
  			command.add_flags(flags);
 
- 			// Adding command to target
- 			if (lineNumber != -1) {
-				target.add_command(command, lineNumber);
-			} else {
-				target.add_command(command);
-			} 
-			
-			// Print debug
-			// print_debug();
+			target.add_command(command);
  		}
  		
- 		_mk.add_target(target, lineNumber != -1);
+ 		_mk.add_target(target, false);
 
  	}
 
@@ -175,6 +149,38 @@ class CommandInterpreter {
 
  	}
 
+ 	void parse_edit() {
+ 		int lineNumber = -1;
+		Target* target = new Target(_argv[2]);
+ 		std::string targetName = std::string(target->get_title());
+
+		lineNumber = get_line_number(targetName);
+		char* name = get_target_name(targetName);
+		target = _mk.get_target_as_pointer(name);
+		
+		Command command;
+
+ 		if(lineNumber == -1 && target != NULL && _argc == 4) {
+ 			name = _argv[3];
+ 			target->set_title(name);
+ 		} else if(lineNumber != -1) {
+ 			Target old = *target;
+ 			Compiler compiler(_argv[3]);
+ 			command.set_compiler(compiler);
+ 			std::vector<File> files = parse_files();
+ 			command.add_files(files);
+ 			int startsAt = 4 + files.size();
+ 			std::vector<Flag> flags = parse_flags(startsAt);
+ 			command.add_flags(flags);
+ 			old.add_command(command, lineNumber);
+ 			_mk.add_target(old, true);
+ 		} else if (target == NULL) {
+ 			throw -3;
+ 		} else {
+ 			throw -4;
+ 		}
+ 	}
+
  	std::vector<Flag> parse_flags(const int startsAt) {
  		int i = startsAt;
  		std::vector<Flag> flags;
@@ -190,9 +196,9 @@ class CommandInterpreter {
  	}
 
  	std::vector<File> parse_files() {
- 		int i = 3;
+ 		int i = 4;
  		std::vector<File> files;
- 		std::string input = _argv[3];
+ 		std::string input = _argv[4];
 
  		while (input[0] != '-') {
  			File file(input);
@@ -218,38 +224,21 @@ class CommandInterpreter {
 	 		std::string newTargetName = targetName.substr(0, temp);
 	 		char* name = (char*) malloc (newTargetName.size() + 1);
     		memcpy(name, newTargetName.c_str(), newTargetName.size() + 1);
-	 		return name;//return const_cast<char*>(newTargetName.c_str());
+	 		return name;
 	 	} 
 	 	char* name = (char*) malloc (targetName.size() + 1);
     	memcpy(name, targetName.c_str(), targetName.size() + 1);
-    	return name;//return const_cast<char*>(targetName.c_str());
+    	return name;
  	}	
-
- 	// TODO (not working).
- 	/* void print_debug() {
-		
-		Command command = _mk.get_target(0).get_commands().at(0);
-		
-		std::cout << "Compilador: " << command.get_compiler() << endl;
-		for(int i = 0; i < command.get_files().size(); i++){
-	 		std::cout << "File[" << i << "]: " << command.get_files().at(i).get_path() << endl;
- 		} 
-		
-		for(int i = 0; i < command.get_flags().size(); i++){
-	 		std::cout << "Flags[" << i << "]: " << command.get_flags().at(i).get_flag() << endl;
- 		}
-	} */
 
  	void print_usage() {
  		printf(usage.c_str());
  	}
 
- 	// Variables
  	int _argc;
  	char** _argv;
  	MakeFile _mk;
 
- 	// Messages (constants)
  	const std::string 
  		noArguments = "No arguments is given, try again using the correct parameters.\n",
  		usage = "======================================================================\n" \

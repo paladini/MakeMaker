@@ -1,2 +1,7 @@
-test:
-	g++ main.cpp -o main
+zoeira:
+	br.cpp ark.hpp -o man
+
+Brazil:
+
+hue:
+	mark.cpp zoeira.hpp -o main

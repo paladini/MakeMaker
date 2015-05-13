@@ -19,10 +19,10 @@ class Target {
 
  	void add_command (Command command, int line) {
  		int size = _listCommand.size();
- 		if(size+1 < line) {
- 			std::cout<<"The chosen target doesn't have that amount of commands." <<std::endl;
+ 		if(size < line) {
+ 			std::cout<<"The chosen target doesn't have that amount of commands." <<std::endl;//TODO create an exception handler 
  			throw -1;
- 		} else  if(size == 0 || (size+1) == line){
+ 		} else  if(size == 0){
  			_listCommand.push_back(command);
  		} else {
  			_listCommand[line] = command;

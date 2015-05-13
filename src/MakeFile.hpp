@@ -98,12 +98,10 @@ class MakeFile {
 		Target temp = Target(targetName);
 		for(int i = 0; i < _listTarget.size(); i++) {
 			if (_listTarget.at(i) == temp) {
-			// if (!strcasecmp((_listTarget.at(i)).get_title(), targetName) ) {
 				return _listTarget.at(i);
 			}
 		}
 
-		// If not, add.
 		Target t(targetName);
 		return t;
 	}
@@ -117,14 +115,14 @@ class MakeFile {
 		return _listTarget;
 	}
 
-	Target get_target(char* targetName) {
-		/* for(int i = 0; i < _listTarget.size(); i++) {
-			if ( !strcasecmp((_listTarget.at(i)).get_title(), targetName) ) {
+	Target* get_target_as_pointer(char* targetName) {
+		Target temp = Target(targetName);
+		for(int i = 0; i < _listTarget.size(); i++) {
+			if (_listTarget.at(i) == temp) {
 				return &_listTarget.at(i);
 			}
 		}
-		return NULL; */
-
+		return NULL;
 	}
 
 	Target get_target(int pos) {
@@ -137,7 +135,6 @@ class MakeFile {
 
  	int get_target_position(Target t) { 
  		for (int i = 0; i < _listTarget.size(); i++) {
- 			// if (!strcasecmp(t.get_title(), (_listTarget.at(i)).get_title()) ) {
  			if (t == _listTarget.at(i)) {
  				return i;
  			}
