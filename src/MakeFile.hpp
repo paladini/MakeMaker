@@ -85,7 +85,7 @@ class MakeFile {
 	void remove_target(Target t) {
 		int position = get_target_position(t);
 		if (position != -1) {
-			remove_target();
+			remove_target(position);
 		}
 	}
 
@@ -106,6 +106,11 @@ class MakeFile {
 		// If not, add.
 		Target t(targetName);
 		return t;
+	}
+	void add_command_in_target(Target target, Command command) {
+		int position = get_target_position(target);
+		Target tar = _listTarget.at(position);
+		tar.add_command(command);
 	}
 
 	std::vector<Target> get_targets() {

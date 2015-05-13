@@ -119,7 +119,7 @@ class CommandInterpreter {
 		//	Differences between "mm <target> <command>" and "mm <target>:<lineOfCommand> <command>", where:
 		//      - In the first case, add a new target.
 		//      - In the second case, overwrites a command (given by the "lineOfCommand"). 
- 		if (_argc > 1) {
+ 		if (_argc > 2) {
 
  			// Get compiler
  			Compiler compiler(_argv[2]);
@@ -144,6 +144,7 @@ class CommandInterpreter {
 			// Print debug
 			// print_debug();
  		}
+ 		
  		_mk.add_target(target, lineNumber != -1);
 
  	}
