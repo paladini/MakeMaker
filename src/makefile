@@ -6,3 +6,6 @@ zoeira:
 
 target:
 	g++ g++ nova.cpp main
+
+teste:
+	g++ -o teste main.cpp

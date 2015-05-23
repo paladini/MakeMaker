@@ -141,6 +141,97 @@ void test_makefile_memory_add_diff_target_with_same_name() {
 	
 }
 
+void test_makefile_commandline_one_target_single_command() {
+	//std::string argv; 
+	int argc = 7; 
+	char* argv[argc];
+	bool everything_okay = true;
+
+	// Testing different combinations for the same command
+	// argv = "./Run.o add myTarget g++ myFile.cpp -o file";
+	argv[0] = "./Run.o";
+	argv[1] = "add";
+	argv[2] = "myTarget";
+	argv[3] = "g++";
+	argv[4] = "myFile.cpp";
+	argv[5] = "-o file";
+	// argv[1] = 'add';
+
+	CommandInterpreter interpreter(argc, argv);
+	MakeFile mk = interpreter.parse();
+
+	argv = "./Run.o add myTarget gcc -o mySecondFile mySecondFile.cpp";
+	CommandInterpreter interpreter1(argc, argv);
+	MakeFile mk1 = interpreter1.parse();
+
+	// Should not work.
+	try {
+		argv = "./Run.o add myTarget abcde myFile.cpp -o file";
+		CommandInterpreter interpreter2(argc, argv);
+		MakeFile mk2 = interpreter2.parse();
+		everything_okay = false;
+	} catch (int e) { }
+
+	std::cout << "Valor aqui: " << everything_okay << " !!!" << std::endl;
+
+	// Reading and parsing makefile
+	MakeFile parseFromFile("makefile");
+
+	// Checking target name
+	Target t = parseFromFile.get_target(0);
+	if (t.get_title() != "myTarget") {
+		everything_okay = false;
+	} 
+
+	// Checking command variables
+	std::vector<Command> commandList = t.get_commands();
+	
+	// Checking command number 0.
+	Command c1 = commandList.at(0);
+	if (c1.get_compiler().get_compiler() != "g++") {
+		everything_okay = false;
+	}
+	if (c1.get_flags().at(0).get_flag() != "-o file") {
+		everything_okay = false;
+	}
+	if (c1.get_files().at(0).get_path() != "myFile.cpp") {
+		everything_okay = false;
+	}
+
+	// Checking command number 1.
+	c1 = commandList.at(1);
+	if (c1.get_compiler().get_compiler() != "gcc") {
+		everything_okay = false;
+	}
+	if (c1.get_flags().at(0).get_flag() != "-o mySecondFile") {
+		everything_okay = false;
+	}
+	if (c1.get_files().at(0).get_path() != "mySecondFile.cpp") {
+		everything_okay = false;
+	}	
+
+	// Don't need to check command 2, it should throw an exception.
+	if (everything_okay == false) {
+		std::cout << "###### ERROR: test_makefile_commandline_one_target_single_command" << std::endl;
+	} else {
+		std::cout << "test_makefile_commandline_one_target_single_command: OK!" << std::endl;
+	}
+
+
+}
+
+void test_makefile_commandline_much_target_single_command() {
+	
+}
+
+void test_makefile_commandline_one_target_multiple_command() {
+	
+}
+
+void test_makefile_commandline_much_target_multiple_command() {
+	
+}
+
 /**
 
 	This test should generate the following makefile:
@@ -234,5 +325,6 @@ int main(int argc, char* argv[]) {
 	test_makefile_memory_delete();
 	test_makefile_memory_add_target_twice();
 	test_makefile_memory_add_diff_target_with_same_name();
+	test_makefile_commandline_one_target_single_command();
 
 }

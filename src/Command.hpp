@@ -7,6 +7,11 @@
 #include "Flag.hpp"
 #include "Compiler.hpp"
 #include "File.hpp"
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+
 
 class Command {
 	
@@ -14,6 +19,7 @@ class Command {
 	
 	// Constructors
 	Command() : _compiler("gg") {}
+	// Command(std::string commandLine) { parse(commandLine); }
 	Command(std::string compiler) : _compiler(compiler) {}
 	~Command(){}
 	// TODO
@@ -102,6 +108,35 @@ class Command {
 	
 	Compiler get_compiler() {
 		return _compiler;
+	}
+
+	void parse(std::string line) {
+		std::string temp, next;
+
+		std::istringstream iss(line);
+		std::vector<std::string> tokens{ std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{} };
+
+		set_compiler(tokens.at(0));
+		for (int i = 1; i < tokens.size(); i++) {
+			temp = tokens.at(i);
+
+			if(temp.at(0) != '-') {
+				add_file(temp);
+			} else { // flag
+
+				// Remember, we can have a flag like that: "-o MyOutputName -c -d"
+				// "-o MyOutputName" must be a single flag (a flag that have one argument). We must parse it, the code below care that.
+				if ((i+1) < tokens.size()) {
+					next = tokens.at(i+1);
+					if(next.at(0) != '-') {
+						temp += " " + next;
+						i++;
+					}	
+				}
+				add_flag(temp);
+
+			}
+		}
 	}
 	
  private:

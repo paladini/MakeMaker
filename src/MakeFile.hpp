@@ -15,14 +15,14 @@ class MakeFile {
 
  	// Antes não chamava esses dois métodos aqui, talvez se faça necessário removê-los.
 	MakeFile(std::string path) : _file(path) {
-		FileInterpreter fi(_file);
+		FileInterpreter fi(&_file);
 		std::vector<Target> temporary;
 		fi.parseFile(&temporary);
 		_listTarget = temporary;
 	}
 	MakeFile(std::string path, bool overwrite) : _file(path) {
 		if(!overwrite) {
-			FileInterpreter fi(_file);
+			FileInterpreter fi(&_file);
 			std::vector<Target> temporary;
 			fi.parseFile(&temporary);
 			_listTarget = temporary;
@@ -101,7 +101,7 @@ class MakeFile {
 				return _listTarget.at(i);
 			}
 		}
-
+		
 		Target t(targetName);
 		return t;
 	}

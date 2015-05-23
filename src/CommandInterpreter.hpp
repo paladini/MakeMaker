@@ -71,9 +71,8 @@ class CommandInterpreter {
  			throw -1;
  		}
 
- 		if(!strcasecmp(_argv[1], "add")) {
+ 		if(!strcasecmp(_argv[1], "add"))
  			parse_add();
- 		}
  		else if(!strcasecmp(_argv[1], "remove"))
  			parse_delete();
  		else if(!strcasecmp(_argv[1], "edit"))
@@ -89,37 +88,40 @@ class CommandInterpreter {
 
  private:
 
- 	void parse_add() { 
+ 	void parse_add() {
 
- 		int lineNumber = -1;
 		Target target(_argv[2]);
  		std::string targetName = std::string(target.get_title());
 
 		char* name = get_target_name(targetName);
 		target = _mk.get_or_create_target(name);
-		
+
 		Command command;
-		
+ 		if (_argc > 3) {
+ 			std::string myAwesomeCommand = std::string(_argv[3]) + " ";
+			for(int i = 4; i<_argc; i++) {
+				myAwesomeCommand += std::string(_argv[i]) + " ";
+			}
+			command.parse(myAwesomeCommand);
+			target.add_command(command);
+		}
+
  		// TODO:
 		//	Differences between "mm <target> <command>" and "mm <target>:<lineOfCommand> <command>", where:
 		//      - In the first case, add a new target.
 		//      - In the second case, overwrites a command (given by the "lineOfCommand"). 
- 		if (_argc > 3) {
 
- 			Compiler compiler(_argv[3]);
- 			command.set_compiler(compiler);
+ 		// 	Compiler compiler(_argv[3]);
+ 		// 	command.set_compiler(compiler);
 
- 			std::vector<File> files = parse_files();
- 			command.add_files(files);
+ 		// 	std::vector<File> files = parse_files();
+ 		// 	command.add_files(files);
 
- 			int startsAt = 4 + files.size();
- 			std::vector<Flag> flags = parse_flags(startsAt);
- 			command.add_flags(flags);
-
-			target.add_command(command);
- 		}
+ 		// 	int startsAt = 4 + files.size();
+ 		// 	std::vector<Flag> flags = parse_flags(startsAt);
+ 		// 	command.add_flags(flags);
  		
- 		_mk.add_target(target, false);
+ 		_mk.add_target(target, true);
 
  	}
 
