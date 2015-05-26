@@ -126,9 +126,6 @@ class CommandInterpreter {
  	}
 
  	void parse_delete() {
-
- 		// If only target was given, delete target.
- 		// Currently this isn't working with <target>:<line>.
  		if(_argc == 3) {
  			char* targetName = get_target_name(std::string(_argv[2]));
  			Target t(targetName);
@@ -139,22 +136,7 @@ class CommandInterpreter {
  			} else {
 	 			_mk.remove_target(t);
  			}
-
- 			return;
  		}
-
- 		// Cause there's 4 arguments, must determine what's the used flag (-c, -f, -F)
- 		// Fazer de uma forma melhor.
- 		if(_argv[4] == "-c"){
- 			return;
- 		} else if(_argv[4] == "-f") {
- 			return;
- 		} else if(_argv[4] == "-F") {
- 			return;
- 		} else {
- 			std::cout << "Problem!" << std::endl; // deve ser um throw, não um cout.
- 		}
-
  	}
 
  	void parse_edit() {
