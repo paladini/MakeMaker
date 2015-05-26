@@ -105,10 +105,21 @@ class MakeFile {
 		Target t(targetName);
 		return t;
 	}
-	void add_command_in_target(Target target, Command command) {
-		int position = get_target_position(target);
+	void add_command_in_target(Target t, Command command) {
+		int position = get_target_position(t);
 		Target tar = _listTarget.at(position);
 		tar.add_command(command);
+	}
+
+	void remove_command_from_target(Target t, int line) {
+		// int position = get_target_position(t);
+		// Target tar = _listTarget.at(position);
+		Target* tar = get_target_as_pointer(t.get_title());
+		tar->remove_command(line);
+
+		if (tar->get_commands().size() == 0) {
+			remove_target(*tar);
+		}
 	}
 
 	std::vector<Target> get_targets() {

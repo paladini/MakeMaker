@@ -29,6 +29,11 @@ class Target {
  		}
  	}
 
+ 	void remove_command(int line) {
+ 		if ((line >= 0) && (line <= _listCommand.size()))
+ 			_listCommand.erase(_listCommand.begin() + line);
+ 	}
+
  	std::vector<Command> get_commands() {
  		return _listCommand;
  	}

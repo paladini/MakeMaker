@@ -6,8 +6,8 @@ FLAGS_EXTENDED=-fpermissive -Wformat-security
 
 all: clean test_compile test
 
-run: clean run_compile
-	cd binary/ &&clear && clear && ./Run.o ! myTarget
+run: run_compile
+	cd binary/ &&clear && clear
 
 test:
 	cd binary/ && clear && clear && ./Test compiler g++ main.c -o main

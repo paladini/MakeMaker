@@ -133,7 +133,13 @@ class CommandInterpreter {
  			char* targetName = get_target_name(std::string(_argv[2]));
  			Target t(targetName);
 
- 			_mk.remove_target(t);
+ 			int line_number = get_line_number(std::string(_argv[2]));
+ 			if (line_number != -1) {
+ 				_mk.remove_command_from_target(t, line_number);
+ 			} else {
+	 			_mk.remove_target(t);
+ 			}
+
  			return;
  		}
 
