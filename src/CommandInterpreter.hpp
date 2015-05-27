@@ -56,6 +56,7 @@
 #include <string>
 #include <string.h>
 #include <vector>
+#include <exception>			
 #include "MakeFile.hpp"
 #include "Target.hpp"
 #include "Command.hpp"
@@ -69,18 +70,12 @@ class CommandInterpreter {
  	MakeFile parse() {
  		if (_argc < 2) {
  			print_usage();
- 			throw InsufficientArguments();
- 		}
-
- 		if (!strcasecmp(_argv[1], "list")) {
- 			parse_list();
- 		} else {
+ 		} else if (!strcasecmp(_argv[1], "list")){
+	 		parse_list();
+	 	} else {
  			if(_argc == 2) {
 	 			print_usage();
-	 			throw InsufficientArguments();
-	 		}
-
-	 		if(!strcasecmp(_argv[1], "add")) {
+	 		} else if(!strcasecmp(_argv[1], "add")) {
 	 			parse_add();
 	 		} else if(!strcasecmp(_argv[1], "remove")) {
 	 			parse_delete();
@@ -91,8 +86,7 @@ class CommandInterpreter {
 	 		}
 	 		_mk.save();
  		}
-
- 		return _mk;
+		return _mk;
  	}
 
 
@@ -247,16 +241,14 @@ class CommandInterpreter {
  	}	
 
  	void print_usage() {
- 		printf(usage.c_str());
+ 		std::cout << usage << std::endl;
  	}
 
  	int _argc;
  	char** _argv;
  	MakeFile _mk;
 
- 	const std::string 
- 		noArguments = "No arguments is given, try again using the correct parameters.\n",
- 		usage = "======================================================================\n" \
+ 	const std::string usage = "======================================================================\n" \
  				"    MakeMaker is an easy-to-use tool that generate makefiles.\n" \
  				"\n    Currently there's no GUI interface for this tool, so you must" \
  				"\n    create your makefiles by command line. Following you can check" \
