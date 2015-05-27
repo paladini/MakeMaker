@@ -29,14 +29,7 @@ class Command {
 	//Command(Compiler compiler, std::vector<Flag> flags, std::vector<File> files) : _compiler(compiler), _flags(flags), _files(files) {}
 
 	
-	// Methods
-	void set_files(std::vector<File> files) {
-		_files = files;
-	}
 
-	void set_flags(std::vector<Flag> flags) {
-		_flags = flags;
-	}
 
 	/* void add_files(std::vector<File> files) {
 		bool fileExists = 0;
@@ -137,6 +130,15 @@ class Command {
 
 			}
 		}
+	}
+
+	// Methods
+	void set_files(std::vector<File> files) {
+		_files = files;
+	}
+
+	void set_flags(std::vector<Flag> flags) {
+		_flags = flags;
 	}
 	
  private:

@@ -51,6 +51,7 @@ class CommandInterpreter {
 
  public:
  	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile", false)  {} 
+ 	~CommandInterpreter() {}
 
  	MakeFile parse() {
  		if (_argc < 2) {

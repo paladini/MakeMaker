@@ -1,8 +1,6 @@
 #ifndef MAKEFILE_HPP_
 #define MAKEFILE_HPP_
-
 #include <string>
-// #include <strings.h>
 #include <vector>
 #include <iostream>
 #include "Target.hpp"
@@ -13,7 +11,6 @@ class MakeFile {
 
  public:
 
- 	// Antes não chamava esses dois métodos aqui, talvez se faça necessário removê-los.
 	MakeFile(std::string path) : _file(path) {
 		FileInterpreter fi(&_file);
 		std::vector<Target> temporary;
@@ -58,7 +55,6 @@ class MakeFile {
 		return text;
 	}
 
-	// TODO: implementar substituição de comandos
 	void add_target(Target target) {
 		if (check_target_existence(target)) {
 			throw -1;
@@ -93,18 +89,7 @@ class MakeFile {
 		_listTarget.erase(_listTarget.begin() + pos);
 	}
 
-	// Review it. Before it was marked as "deprecated", but I think it should not be deprecated.
-	Target get_or_create_target(char* targetName) {
-		Target temp = Target(targetName);
-		for(int i = 0; i < _listTarget.size(); i++) {
-			if (_listTarget.at(i) == temp) {
-				return _listTarget.at(i);
-			}
-		}
-		
-		Target t(targetName);
-		return t;
-	}
+
 	void add_command_in_target(Target t, Command command) {
 		int position = get_target_position(t);
 		Target tar = _listTarget.at(position);
@@ -141,10 +126,6 @@ class MakeFile {
 		return target;
 	}
 
-	std::vector<Target> get_targets() {
-		return _listTarget;
-	}
-
 	Target* get_target_as_pointer(char* targetName) {
 		Target temp = Target(targetName);
 		for(int i = 0; i < _listTarget.size(); i++) {
@@ -155,8 +136,25 @@ class MakeFile {
 		return NULL;
 	}
 
+	// Review it. Before it was marked as "deprecated", but I think it should not be deprecated.
+	Target get_or_create_target(char* targetName) {
+		Target temp = Target(targetName);
+		for(int i = 0; i < _listTarget.size(); i++) {
+			if (_listTarget.at(i) == temp) {
+				return _listTarget.at(i);
+			}
+		}
+		
+		Target t(targetName);
+		return t;
+	}
+
 	Target get_target(int pos) {
 		return _listTarget.at(pos);
+	}
+
+	std::vector<Target> get_targets() {
+		return _listTarget;
 	}
 
  private:

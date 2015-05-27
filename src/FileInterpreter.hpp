@@ -14,6 +14,7 @@ class FileInterpreter {
 	FileInterpreter (FileManager* manager) {
 		_manager = *manager;
 	}
+    ~FileInterpreter() {}
 
 	void parseFile(std::vector<Target>* temp) {
 		if(_manager.already_exists_a_makefile()){

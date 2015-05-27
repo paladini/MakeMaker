@@ -16,10 +16,7 @@ class FileManager {
 	 		_exists = true;
 	 	}
 	} 
-	 
-	// TODO
-	~FileManager() {
-	}
+	~FileManager() { }
 
 	void write(std::string newContent) {
 	 	std::ofstream makefile(_path.c_str());
