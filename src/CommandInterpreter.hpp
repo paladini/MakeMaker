@@ -2,50 +2,35 @@
 	This class parse a command that was given from the command line.
 	You can use `makemaker` to run all these commands or just `mm` (an alias).
 
-	Specification TODO:
-		- Think about <command> abstraction. What if user wants to compiler
-		  a lot of files in a single command? ("g++ rola.cpp hard.cpp shora.c -o main")
-
 	Current specification:
-		
+
 		# Creating/Editing Target:
 			This command will create a target if it doesn't exist, 
 			and edit it, otherwise.
 
-			mm <target>
+			mm add <target>
 		
 		# Adding command to target
-			mm <target> <command>
-			mm <target> "<literal_command>"
+			mm add <target> <command>
 
-			Where <command> is just:
-				<compiler> <all|*.extension|filename.*|filename.extension> <flags>
-
-			Where "<literal_command>" can be any command you like:
-				grep -js | "pasdpokasd"
+			Where <command> is:
+				<compiler> <filename.ext, filename2.ext, ...> <flags>
 		
+		# Target rename:
+			mm edit <oldTargetName> <newTargetName>
+
 		# Replacing command:
-			mm <target>:<number_line> <command>
-			mm <target>:<number_line> "<literal_command>"
+			mm edit <target>:<number_line> <command>
 
 			Where <command> is just:
-				<compiler> <all|*.extension|filename.*|filename.extension> <flags>
+				<compiler> <filename.ext, filename2.ext, ...> <flags>
 
 		# Deleting target
-			mm ! <target>
+			mm remove <target>
 
 		# Deleting full command
-			mm ! <target>:<number_line>
+			mm remove <target>:<number_line>
 	
-		# Deleting compiler
-			mm ! <target>:<number_line> -c
-
-		# Deleting filename
-			mm ! <target>:<number_line> -f <all|*.extension|filename.*|filename.extension>
-
-		# Deleting flag 
-			mm ! <target>:<number_line> -F <flags>
-  
 */
 
 #ifndef COMMAND_INTERPRETER_HPP_
@@ -65,7 +50,7 @@
 class CommandInterpreter {
 
  public:
- 	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile", false)  {} /* ----------- the problem may be originated here ----------- */ 
+ 	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile", false)  {} 
 
  	MakeFile parse() {
  		if (_argc < 2) {
