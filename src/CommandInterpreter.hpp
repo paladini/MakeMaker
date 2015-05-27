@@ -59,6 +59,7 @@
 #include "MakeFile.hpp"
 #include "Target.hpp"
 #include "Command.hpp"
+#include "exceptions/InsufficientArguments.hpp"
 
 class CommandInterpreter {
 
@@ -66,12 +67,17 @@ class CommandInterpreter {
  	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile", false)  {} /* ----------- the problem may be originated here ----------- */ 
 
  	MakeFile parse() {
+ 		if (_argc < 2) {
+ 			print_usage();
+ 			throw InsufficientArguments();
+ 		}
+
  		if (!strcasecmp(_argv[1], "list")) {
  			parse_list();
  		} else {
- 			if(_argc <= 2) {
+ 			if(_argc == 2) {
 	 			print_usage();
-	 			throw -1;
+	 			throw InsufficientArguments();
 	 		}
 
 	 		if(!strcasecmp(_argv[1], "add")) {
