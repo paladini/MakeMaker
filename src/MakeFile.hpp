@@ -122,6 +122,25 @@ class MakeFile {
 		}
 	}
 
+	std::string list_targets() {
+		std::string targets = "MakeMaker has found " + std::to_string(_listTarget.size()) + " targets."; 
+		targets += "\n=================================";
+		for(int i = 0; i < _listTarget.size(); i++) {
+			targets += "\n" + std::string(_listTarget.at(i).get_title());
+		}
+		targets += "\n=================================";
+		return targets;
+	}
+
+	std::string list_target(char* targetName) {
+		Target* t = get_target_as_pointer(targetName);
+		std::string target = std::string(t->get_title());
+		for(int i = 0; i < t->get_commands().size(); i++) {
+			target += "\n" + std::string(t->get_commands().at(i).to_command());
+		}
+		return target;
+	}
+
 	std::vector<Target> get_targets() {
 		return _listTarget;
 	}

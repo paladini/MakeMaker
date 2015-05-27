@@ -17,8 +17,8 @@ int main(int argc, char* argv[]) {
 	
 	// Creating a makefile
 	CommandInterpreter interpreter(argc, argv);
-	MakeFile mk = interpreter.parse();
-
+	// MakeFile mk = interpreter.parse();
+	interpreter.parse();
 	// Test for the makefile parsing.
 	//MakeFile _mk("makefile", false);
 	//std::cout << "Nome do target no Run.cpp: " <<  _mk.get_targets().at(0).get_title()<< std::endl;
