@@ -66,12 +66,9 @@ class CommandInterpreter {
  	CommandInterpreter (int argc, char** argv) : _argc(argc), _argv(argv), _mk("makefile", false)  {} /* ----------- the problem may be originated here ----------- */ 
 
  	MakeFile parse() {
- 		std::cout << "Olar!! " << _argc << std::endl;
  		if (!strcasecmp(_argv[1], "list")) {
- 			std::cout << "if list" << std::endl;
  			parse_list();
  		} else {
- 			std::cout << "Else";
  			if(_argc <= 2) {
 	 			print_usage();
 	 			throw -1;
@@ -180,19 +177,15 @@ class CommandInterpreter {
 
  	void parse_list() {
  		if (_argc == 2) {
- 			std::cout << "argc == 2" << std::endl;
 	 		std::cout << _mk.list_targets() << std::endl;
  			return;
  		} else if (_argc == 3) {
- 			std::cout << "cheugei aquiii!!";
- 			if (!strcasecmp(_argv[3], "-a")) {
- 				std::cout << "Aqui!";
+ 			if (!strcasecmp(_argv[2], "-A")) {
  				std::cout << _mk.to_string() << std::endl;
  			} else {
-	 			std::cout << _mk.list_target(_argv[3]) << std::endl;
+	 			std::cout << _mk.list_target(_argv[2]) << std::endl;
  			}
  		} else {
- 			std::cout << "throooww" << std::endl;
  			throw -2;
  		}
  	}
