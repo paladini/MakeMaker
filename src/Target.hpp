@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include "Command.hpp"
+#include "exceptions/OutOfRangeException.hpp"
 
 class Target {
 
@@ -19,8 +20,7 @@ class Target {
  	void add_command (Command command, int line) {
  		int size = _listCommand.size();
  		if(size < line) {
- 			std::cout<<"The chosen target doesn't have that amount of commands." <<std::endl;//TODO create an exception handler 
- 			throw -1;
+ 			throw OutOfRangeException();
  		} else  if(size == 0){
  			_listCommand.push_back(command);
  		} else {
@@ -29,8 +29,11 @@ class Target {
  	}
 
  	void remove_command(int line) {
- 		if ((line >= 0) && (line <= _listCommand.size()))
+ 		if ((line >= 0) && (line <= _listCommand.size())) {
  			_listCommand.erase(_listCommand.begin() + line);
+ 		} else {
+ 			throw OutOfRangeException();
+ 		}
  	}
 
  	std::vector<Command> get_commands() {

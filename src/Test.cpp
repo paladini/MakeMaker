@@ -160,13 +160,13 @@ void test_makefile_commandline_one_target_single_command() {
 	CommandInterpreter interpreter(argc, argv);
 	MakeFile mk = interpreter.parse();
 
-	argv = "./Run.o add myTarget gcc -o mySecondFile mySecondFile.cpp";
+	// argv = "./Run.o add myTarget gcc -o mySecondFile mySecondFile.cpp";
 	CommandInterpreter interpreter1(argc, argv);
 	MakeFile mk1 = interpreter1.parse();
 
 	// Should not work.
 	try {
-		argv = "./Run.o add myTarget abcde myFile.cpp -o file";
+		// argv = "./Run.o add myTarget abcde myFile.cpp -o file";
 		CommandInterpreter interpreter2(argc, argv);
 		MakeFile mk2 = interpreter2.parse();
 		everything_okay = false;

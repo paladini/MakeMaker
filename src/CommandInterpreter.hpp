@@ -46,6 +46,7 @@
 #include "Target.hpp"
 #include "Command.hpp"
 #include "exceptions/InsufficientArguments.hpp"
+#include "exceptions/SomethingWrongException.hpp"
 
 class CommandInterpreter {
 
@@ -68,7 +69,7 @@ class CommandInterpreter {
 	 		} else if(!strcasecmp(_argv[1], "edit")) {
 	 			parse_edit();
 	 		} else {
-	 			throw -2;
+	 			throw SomethingWrongException();
 	 		}
 	 		_mk.save();
  		}
@@ -172,7 +173,7 @@ class CommandInterpreter {
 	 			std::cout << _mk.list_target(_argv[2]) << std::endl;
  			}
  		} else {
- 			throw -2;
+ 			throw SomethingWrongException();
  		}
  	}
 
