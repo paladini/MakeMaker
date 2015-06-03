@@ -4,7 +4,7 @@
 
 	Current specification:
 
-		# Creating/Editing Target:
+		# Creating/Editing Target
 			This command will create a target if it doesn't exist.
 
 			mm add <target>
@@ -12,16 +12,16 @@
 		# Adding command to target
 			mm add <target> <command>
 
-			Where <command> is:
+			Where <command> is
 				<compiler> <filename.ext, filename2.ext, ...> <flags>
 		
-		# Target rename:
+		# Target rename
 			mm edit <oldTargetName> <newTargetName>
 
-		# Replacing command:
+		# Replacing command
 			mm edit <target>:<number_line> <command>
 
-			Where <command> is just:
+			Where <command> is just
 				<compiler> <filename.ext, filename2.ext, ...> <flags>
 
 		# Deleting target
@@ -248,15 +248,15 @@ class CommandInterpreter {
 				"\n\tmm add <target> <command>" \
 				"\n\n\t    Where <command> is:" \
 				"\n\t    <compiler> <filename.ext, filename2.ext, ...> <flags>"  \
-				"\n\n\t# Rename target" \ 
-				"\n\tmm edit <oldTargetName> <newTargetName>" \ 
-				"\n\n\t# Replace command" \ 
-				"\n\tmm edit <target>:<number_line> <command>" \ 
+				"\n\n\t# Rename target" \
+				"\n\tmm edit <oldTargetName> <newTargetName>" \
+				"\n\n\t# Replace command" \
+				"\n\tmm edit <target>:<number_line> <command>" \
 				"\n\n\t    Where <command> is:" \
 				"\n\t    <compiler> <filename.ext, filename2.ext, ...> <flags>"  \
-				"\n\n\t# Delete target" \ 
-				"\n\tmm remove <target>" \ 
-				"\n\n\t# Delete command from target" \ 
+				"\n\n\t# Delete target" \
+				"\n\tmm remove <target>" \
+				"\n\n\t# Delete command from target" \
 				"\n\tmm remove <target>:<number_line>\n";
 };
 #endif

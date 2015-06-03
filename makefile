@@ -10,7 +10,14 @@ run: run_compile
 	cd binary/ &&clear && clear
 
 install: clean run_compile
+	@echo "\n=====================================================================================================\n"
+	@echo "Preparing to install MakeMaker under your system..."
+	@echo "Maybe you'll be asked for your 'sudo' password, please provide in order to finish the installation."
+	@echo "\n=====================================================================================================\n"
 	sudo cp binary/mm /usr/bin/mm
+	@echo "\n==========================================================================\n"
+	@echo "\tDone! Just type 'mm' and watch the magic happen!"
+	@echo "\n==========================================================================\n"
 
 test:
 	cd binary/ && clear && clear && ./Test compiler g++ main.c -o main
@@ -20,6 +27,7 @@ test_compile:
 
 run_compile:
 	$(CC) src/Run.cpp -o binary/mm $(FLAGS)
+	@echo "Compile finished!"
 
 compile:
 	$(CC) src/Command.hpp -o binary/Command.o $(FLAGS)
@@ -39,3 +47,4 @@ debug: clean
 
 clean:
 	rm -f binary/*
+	@echo "Cleaning done!"
