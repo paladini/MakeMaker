@@ -13,7 +13,7 @@ class Variable {
   	}
 
   	void setValue(std::string value) {
-		_value = value;  		
+		_value = value;
   	}
 
   	std::string getKey() {

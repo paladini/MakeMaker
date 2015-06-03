@@ -4,6 +4,7 @@
 #include "Command.hpp"
 #include "File.hpp"
 #include "FileManager.hpp"
+#include "Variable.hpp"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
@@ -16,9 +17,11 @@ class FileInterpreter {
 	}
     ~FileInterpreter() {}
 
-	void parseFile(std::vector<Target>* temp) {
+	void parseFile(std::vector<Target>* targets, std::vector<Variable>* variables) {
 		if(_manager.already_exists_a_makefile()){
-			foundTargets(_manager.read(), temp);
+            std::string content = _manager.read();
+            // parseVariables(content, variables);
+			foundTargets(content, targets);
 		}
 	}
 
@@ -26,14 +29,24 @@ class FileInterpreter {
 
  	FileManager _manager;
 
+    // void parseVariables(std::string content, std::vector<Variable>* variables) {
+    //     std::
+    // }
+
 	void foundTargets (std::string content, std::vector<Target>* temp) {
     	std::istringstream reader(content);
-    	std::string line, newTargetName;
-		int pointsPosition, actual = -1;
+    	std::string line, newTargetName, variableKey, variableValue;
+		int pointsPosition, actual = -1, equalPosition;
+        boolean variable = true;
     	while (std::getline(reader, line)) {
-    		pointsPosition = line.find_last_of(":");
-    		
-    		if(line.length() != 0) {
+            if(line.length() != 0) {
+        		pointsPosition = line.find_last_of(":");
+                
+                // if (variable && pointsPosition == -1) { // 
+                    // equalPosition = line.find_last_of("")
+                    // variableKey = line.substr(0, )
+                // } else {
+                    // variable = false;
     			if((line.at(0) != '\t') && (pointsPosition != -1)) {
     				newTargetName = line.substr(0, pointsPosition);
     				char* name = (char*) malloc (newTargetName.size() + 1);
@@ -46,6 +59,8 @@ class FileInterpreter {
     				c.parse(line);
 					temp->at(actual).add_command(c);
     			}
+                // }
+
     		}
     	}
 	}
