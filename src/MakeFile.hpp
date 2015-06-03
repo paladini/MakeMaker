@@ -6,6 +6,7 @@
 #include "Target.hpp"
 #include "FileManager.hpp"
 #include "FileInterpreter.hpp"
+#include "Variable.hpp"
 
 class MakeFile {
 
@@ -72,6 +73,25 @@ class MakeFile {
 			}
 		}
 		_listTarget.push_back(target);
+	}
+
+	void add_variable(Variable var) {
+		_listVariable.push_back(var);
+	}
+
+	void remove_variable() {
+		_listVariable.pop_back();
+	}
+
+	void remove_variable(Variable v) {
+		int position = get_variable_position(v);
+		if (position != -1) {
+			remove_variable(position);
+		}
+	}
+
+	void remove_variable(int pos) {
+		_listVariable.erase(_listVariable.begin() + pos);
 	}
 
 	void remove_target() {
@@ -160,6 +180,20 @@ class MakeFile {
  private:
  	FileManager _file;
  	std::vector<Target> _listTarget;
+ 	std::vector<Variable> _listVariable;
+
+ 	int get_variable_position(Variable v) {
+ 		for (int i = 0; i < _listVariable.size(); i++) {
+ 			if (v == _listVariable.at(i)) {
+ 				return i;
+ 			}
+ 		}
+ 		return -1;
+ 	}
+
+ 	bool check_variable_existence(Variable v) {
+ 		return get_variable_position(v) != -1;
+ 	}
 
  	int get_target_position(Target t) { 
  		for (int i = 0; i < _listTarget.size(); i++) {
