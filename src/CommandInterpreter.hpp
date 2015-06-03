@@ -5,8 +5,7 @@
 	Current specification:
 
 		# Creating/Editing Target:
-			This command will create a target if it doesn't exist, 
-			and edit it, otherwise.
+			This command will create a target if it doesn't exist.
 
 			mm add <target>
 		
@@ -240,12 +239,24 @@ class CommandInterpreter {
  				"\n    Currently there's no GUI interface for this tool, so you must" \
  				"\n    create your makefiles by command line. Following you can check" \
  				"\n    the usage of this tool. Hope it helps you.\n" 
- 				"\n    This software's distribued under the MIT license.\n" \
+ 				"\n    This software's distributed under the MIT license.\n" \
  				"======================================================================\n" \
- 				"\n    Usage:\n" \
- 				"\n\t# Create / Edit a Target:" \
- 				"\n\tmm <target>\n" \
- 				"\n\t# Adding command to Target:" \
- 				"\n\tmm <target> <command>\n";
+ 				"\n    Usage:" \
+ 				"\n\n\t# Create target" \
+				"\n\tmm add <target>" \
+				"\n\n\t# Add command to target" \
+				"\n\tmm add <target> <command>" \
+				"\n\n\t    Where <command> is:" \
+				"\n\t    <compiler> <filename.ext, filename2.ext, ...> <flags>"  \
+				"\n\n\t# Rename target" \ 
+				"\n\tmm edit <oldTargetName> <newTargetName>" \ 
+				"\n\n\t# Replace command" \ 
+				"\n\tmm edit <target>:<number_line> <command>" \ 
+				"\n\n\t    Where <command> is:" \
+				"\n\t    <compiler> <filename.ext, filename2.ext, ...> <flags>"  \
+				"\n\n\t# Delete target" \ 
+				"\n\tmm remove <target>" \ 
+				"\n\n\t# Delete command from target" \ 
+				"\n\tmm remove <target>:<number_line>\n";
 };
 #endif

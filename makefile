@@ -9,14 +9,17 @@ all: clean test_compile test
 run: run_compile
 	cd binary/ &&clear && clear
 
+install: clean run_compile
+	sudo cp binary/mm /usr/bin/mm
+
 test:
 	cd binary/ && clear && clear && ./Test compiler g++ main.c -o main
 
 test_compile:
-	$(CC) src/Test.cpp -o binary/Test $(FLAGS)
+	$(CC) src/tests/Test.cpp -o binary/Test $(FLAGS)
 
 run_compile:
-	$(CC) src/Run.cpp -o binary/Run.o $(FLAGS)
+	$(CC) src/Run.cpp -o binary/mm $(FLAGS)
 
 compile:
 	$(CC) src/Command.hpp -o binary/Command.o $(FLAGS)
@@ -28,11 +31,11 @@ compile:
 	$(CC) src/Flag.hpp -o binary/Flag.o $(FLAGS)
 	$(CC) src/MakeFile.hpp -o binary/MakeFile.o $(FLAGS)
 	$(CC) src/Target.hpp -o binary/Target.o $(FLAGS)
-	$(CC) src/Test.cpp -o binary/Test.o $(FLAGS)
+	$(CC) src/tests/Test.cpp -o binary/Test.o $(FLAGS)
 	$(CC) src/Run.cpp -o binary/Run.o $(FLAGS)
 
 debug: clean
-	$(CC) src/Test.cpp -o binary/Test $(FLAGS) -g
+	$(CC) src/tests/Test.cpp -o binary/Test $(FLAGS) -g
 
 clean:
 	rm -f binary/*

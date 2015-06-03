@@ -1,7 +1,7 @@
-#include "Command.hpp"
-#include "FileManager.hpp"
-#include "CommandInterpreter.hpp"
-#include "MakeFile.hpp"
+#include "../Command.hpp"
+#include "../FileManager.hpp"
+#include "../CommandInterpreter.hpp"
+#include "../MakeFile.hpp"
 #include <iostream>
 
 //
