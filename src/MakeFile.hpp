@@ -37,8 +37,15 @@ class MakeFile {
 	std::string to_string() {
 		std::string text = ""; 
 
+		// Load all variables
+		for (int i = 0; i < _listVariable.size(); i++) {
+			text += std::string(_listVariable.at(i).get_key()) + "=" \
+					+ std::string(_listVariable.at(i).get_value()) + "\n";
+		}
+		text += "\n";
+
 		// Load all targets and put everything inside a string.
-		for(int i = 0; i < _listTarget.size(); i++) {
+		for (int i = 0; i < _listTarget.size(); i++) {
 			Target that = _listTarget.at(i);
 			
 			std::string temp = std::string(that.get_title()) + ":";

@@ -1,26 +1,26 @@
-#idndef VARIABLE_HPP__
+#ifndef VARIABLE_HPP__
 #define VARIABLE_HPP__
 
 #include <string>
 class Variable {
 	
   public:
-  	Variable(std::string key, std::string value) : _key(key), _value(value){}
+  	Variable(char* key, char* value) : _key(key), _value(value){}
   	~Variable(){}
 
-  	void setKey(std::string key) {
+  	void set_key(char* key) {
   		_key = key;
   	}
 
-  	void setValue(std::string value) {
+  	void set_value(char* value) {
 		_value = value;
   	}
 
-  	std::string getKey() {
-  		return _key;
+  	char* get_key() {
+        return _key;
   	}
 
-  	std::string getValue() {
+  	char* get_value() {
   		return _value;
   	}
 
@@ -33,8 +33,8 @@ class Variable {
 	inline bool operator>=(const Variable& rhs) const {return !(operator< (rhs));}
 
   private:
-  	std::string _key;
-  	std::string _value;
+  	char* _key;
+    char* _value;
 
 };
 #endif

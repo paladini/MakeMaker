@@ -17,6 +17,14 @@ class FileInterpreter {
 	}
     ~FileInterpreter() {}
 
+    void parseFile(std::vector<Target>* targets) {
+        if(_manager.already_exists_a_makefile()){
+            std::string content = _manager.read();
+            // parseVariables(content, variables);
+            foundTargets(content, targets);
+        }
+    }
+
 	void parseFile(std::vector<Target>* targets, std::vector<Variable>* variables) {
 		if(_manager.already_exists_a_makefile()){
             std::string content = _manager.read();
@@ -37,7 +45,7 @@ class FileInterpreter {
     	std::istringstream reader(content);
     	std::string line, newTargetName, variableKey, variableValue;
 		int pointsPosition, actual = -1, equalPosition;
-        boolean variable = true;
+        //boolean variable = true;
     	while (std::getline(reader, line)) {
             if(line.length() != 0) {
         		pointsPosition = line.find_last_of(":");
