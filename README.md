@@ -1,5 +1,4 @@
-# MakeMaker
-![MakeMaker - Generate makefiles quickly!](documentation/logo.png)
+![MakeMaker - Generate makefiles quickly!](documentation/logo.png)<br/>
 Generate makefiles quickly with MakeMaker.
 
 # Installation
