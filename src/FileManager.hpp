@@ -50,7 +50,7 @@ class FileManager {
  
 	bool verify() {
 		std::ifstream makefile((&_path)->c_str());
-  		return makefile;
+  		return makefile.good();
 	}
 	 
 	void create() {
