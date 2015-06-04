@@ -1,6 +1,6 @@
 /*
 	This class parse a command that was given from the command line.
-	You can use `makemaker` to run all these commands or just `mm` (an alias).
+	You can use `mm` to run all these commands.
 
 	Current specification:
 
