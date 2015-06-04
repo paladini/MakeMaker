@@ -1,10 +1,10 @@
 # MakeMaker
-[MakeMaker - Generate makefiles quickly!](documentation/logo.png)!
+![MakeMaker - Generate makefiles quickly!](documentation/logo.png)
 Generate makefiles quickly with MakeMaker.
 
 # Installation
 
-1. Download the [latest version of MakeMaker]().
+1. Download the [latest version of MakeMaker](https://github.com/paladini/MakeMaker/archive/master.zip).
 2. Extract it anywhere you want.
 3. Run `sudo make install` on the MakeMaker folder.
 4. Done!
