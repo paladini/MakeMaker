@@ -41,8 +41,10 @@ class MakeFile {
 		for (int i = 0; i < _listVariable.size(); i++) {
 			text += std::string(_listVariable.at(i).get_key()) + "=" \
 					+ std::string(_listVariable.at(i).get_value()) + "\n";
+			if (i + 1 == _listVariable.size()) {
+				text += "\n";
+			}
 		}
-		text += "\n";
 
 		// Load all targets and put everything inside a string.
 		for (int i = 0; i < _listTarget.size(); i++) {
