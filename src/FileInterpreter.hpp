@@ -20,26 +20,21 @@ class FileInterpreter {
     void parseFile(std::vector<Target>* targets) {
         if(_manager.already_exists_a_makefile()){
             std::string content = _manager.read();
-            // parseVariables(content, variables);
             foundTargets(content, targets);
         }
     }
 
-	void parseFile(std::vector<Target>* targets, std::vector<Variable>* variables) {
-		if(_manager.already_exists_a_makefile()){
-            std::string content = _manager.read();
-            // parseVariables(content, variables);
-			foundTargets(content, targets);
-		}
-	}
+	// void parseFile(std::vector<Target>* targets, std::vector<Variable>* variables) {
+	// 	if(_manager.already_exists_a_makefile()){
+ //            std::string content = _manager.read();
+ //            // parseVariables(content, variables);
+	// 		foundTargets(content, targets);
+	// 	}
+	// }
 
  private:
 
  	FileManager _manager;
-
-    // void parseVariables(std::string content, std::vector<Variable>* variables) {
-    //     std::
-    // }
 
 	void foundTargets (std::string content, std::vector<Target>* temp) {
     	std::istringstream reader(content);
