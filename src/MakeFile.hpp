@@ -19,13 +19,12 @@ class MakeFile {
 		_listTarget = temporary;
 	}
 	MakeFile(std::string path, bool overwrite) : _file(path) {
-		if(!overwrite) {
+		if (!overwrite) {
 			FileInterpreter fi(&_file);
 			std::vector<Target> temporary;
 			fi.parseFile(&temporary);
 			_listTarget = temporary;
 		}
-
 	}
 
 	~MakeFile() {} 
