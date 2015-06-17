@@ -3,45 +3,56 @@
 	You can use `mm` to run all these commands.
 
 	Current specification:
-
-		# Create Target
-			This command will create a target if it doesn't exist.
-
-			mm add <target>
 		
-		# Add command to target
-			mm add <target> <command>
-
-			Where <command> is
-				<compiler> <filename.ext, filename2.ext, ...> <flags>
-		
-		# Target rename
-			mm edit <oldTargetName> <newTargetName>
-
-		# Replace command
-			mm edit <target>:<number_line> <command>
-
-			Where <command> is just
-				<compiler> <filename.ext, filename2.ext, ...> <flags>
-
+		### List ###
 		# List all targets (only targets, not their respective commands)
 			mm list 
 		
 		# List entire makefile
 			mm list -A
 
-		# List makefile variables
+		# List variables
 			mm list -V
 
 		# List a single target (with the commands)
 			mm list <target>
+		
+		### Targets ###
+		# Create target
+			mm add <target>
+
+		# Rename target
+			mm edit <oldTargetName> <newTargetName>
 
 		# Delete a target
 			mm remove <target>
+		
+		### Commands ###
+		## Add command to target *(also create the target if it doesn't exist)*
+			mm add <target> <command>
+
+			Where <command> is
+				<compiler> <filename.ext, filename2.ext, ...> <flags>
+			
+		## Replace command from specific target.
+			mm edit <target>:<number_line> <command>
+
+			Where <command> is just
+				<compiler> <filename.ext, filename2.ext, ...> <flags>
 
 		# Delete command
 			mm remove <target>:<number_line>
-	
+		
+		### Variables ###
+		# Add variable
+			mm set -v <myVariableKey1>=<myVarialeValue1> <myVariableKey2>=<myVariableValue2> ...
+		
+		# Edit variable
+			mm set -v <myExistingVariableKey>=<myNewValue>			
+
+		# Remove variable 
+			mm set -v <myExistingVariableKey>= 
+
 */
 
 #ifndef COMMAND_INTERPRETER_HPP_
@@ -56,8 +67,10 @@
 #include "MakeFile.hpp"
 #include "Target.hpp"
 #include "Command.hpp"
+#include "Variable.hpp"
 #include "exceptions/InsufficientArguments.hpp"
 #include "exceptions/SomethingWrongException.hpp"
+#include "exceptions/VariableNullValue.hpp"
 
 class CommandInterpreter {
 
@@ -71,6 +84,8 @@ class CommandInterpreter {
  		}  else {
 	 		if(!strcasecmp(_argv[1], "add")) {
 	 			parse_add();
+	 		} else if(!strcasecmp(_argv[1], "set")) {
+	 			parse_set();
 	 		} else if(!strcasecmp(_argv[1], "remove")) {
 	 			parse_delete();
 	 		} else if(!strcasecmp(_argv[1], "edit")) {
@@ -170,6 +185,21 @@ class CommandInterpreter {
  			}
  		} else {
  			throw SomethingWrongException();
+ 		}
+ 	}
+
+ 	void parse_set() {
+ 		if (_argc >= 4) {
+ 			if (!strcasecmp(_argv[2], "-V")) {
+	 			for(int i = 4; i <= _argc; i++) {
+	 				try {
+	 					Variable v(_argv[i-1]);
+	 					_mk.add_variable(v);
+	 				} catch(VariableNullValue e) { // if variable=<emptyValue>, will delete this var.
+	 					_mk.remove_variable(_argv[i-1]);
+	 				}
+	 			}
+ 			}
  		}
  	}
 

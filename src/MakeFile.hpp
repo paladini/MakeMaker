@@ -88,11 +88,24 @@ class MakeFile {
 	}
 
 	void add_variable(Variable var) {
+		if (check_variable_existence(var)) {
+			remove_variable(var);
+		}
 		_listVariable.push_back(var);
 	}
 
 	void remove_variable() {
 		_listVariable.pop_back();
+	}
+
+	void remove_variable(char* variableChar) {
+		std::string v = std::string(variableChar);
+		int position = v.find_last_of("=");
+		v = v.substr(0, position);
+		Variable* myVariable = get_variable(v);
+		if (myVariable != NULL) {
+			remove_variable(*myVariable);
+		}
 	}
 
 	void remove_variable(Variable v) {
@@ -203,6 +216,15 @@ class MakeFile {
  	FileManager _file;
  	std::vector<Target> _listTarget;
  	std::vector<Variable> _listVariable;
+
+ 	Variable* get_variable(std::string v) {
+ 		for(int i = 0; i < _listVariable.size(); i++) {
+ 			if (!strcasecmp(v.c_str(), _listVariable.at(i).get_key())) {
+ 				return &_listVariable.at(i);
+ 			}
+ 		}
+ 		return NULL;
+ 	}
 
  	int get_variable_position(Variable v) {
  		for (int i = 0; i < _listVariable.size(); i++) {

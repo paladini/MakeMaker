@@ -1,6 +1,5 @@
-myAwesomeVar=myVar
-wonderVar=oasis
-compiler=g++
+myAwesomeVar=myVarValue
+WowAnotherVar=AndAnotherValue
 
 test:
 	this is a testing command

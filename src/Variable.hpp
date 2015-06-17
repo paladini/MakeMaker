@@ -2,10 +2,31 @@
 #define VARIABLE_HPP__
 
 #include <string>
+#include "exceptions/VariableNullValue.hpp"
+
 class Variable {
 	
   public:
   	Variable(char* key, char* value) : _key(key), _value(value){}
+    Variable(std::string keyPair) {
+        int variableSeparator = keyPair.find_last_of("=");
+        if (variableSeparator != -1) {
+            std::string key = keyPair.substr(0, variableSeparator);
+            std::string value = keyPair.substr(variableSeparator+1);
+
+            if (value == "") {
+                throw VariableNullValue();
+            }
+
+            char* tempKey = (char*) malloc (key.size()+1);
+            char* tempValue = (char*) malloc (value.size()+1);
+            memcpy(tempKey, key.c_str(), key.size()+1);
+            memcpy(tempValue, value.c_str(), value.size()+1);
+
+            set_key(tempKey);
+            set_value(tempValue);
+        }
+    }
   	~Variable(){}
 
   	void set_key(char* key) {

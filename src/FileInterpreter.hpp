@@ -41,17 +41,9 @@ class FileInterpreter {
                 }
 
                 if (variableSeparator != -1 && pointsPosition == -1) { 
-                    key = line.substr(0, variableSeparator);
-                    value = line.substr(variableSeparator+1);
-
-                    char* tempKey = (char*) malloc (key.size()+1);
-                    char* tempValue = (char*) malloc (value.size()+1);
-                    memcpy(tempKey, key.c_str(), key.size()+1);
-                    memcpy(tempValue, value.c_str(), value.size()+1);
-                    
-                    Variable v(tempKey, tempValue);
+                    Variable v(line);
                     variables->push_back(v);
-                    
+
                 } else if((line.at(0) != '\t') && (pointsPosition != -1)) {
                     variable = false;
                     newTargetName = line.substr(0, pointsPosition);
