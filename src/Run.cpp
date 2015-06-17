@@ -19,6 +19,10 @@ int main(int argc, char* argv[]) {
 	CommandInterpreter interpreter(argc, argv);
 	MakeFile mk = interpreter.parse();
 
+	// std::cout << mk.to_string() << std::endl;
+	// std::cout << "variables: " << std::endl;
+	// std::cout << mk.list_variables() << std::endl;
+
 	// Creating variables - working!
 	// Variable v1("key1", "value1");
 	// Variable v2("key2", "value2");

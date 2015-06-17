@@ -4,12 +4,12 @@
 
 	Current specification:
 
-		# Creating/Editing Target
+		# Create Target
 			This command will create a target if it doesn't exist.
 
 			mm add <target>
 		
-		# Adding command to target
+		# Add command to target
 			mm add <target> <command>
 
 			Where <command> is
@@ -18,25 +18,28 @@
 		# Target rename
 			mm edit <oldTargetName> <newTargetName>
 
-		# Replacing command
+		# Replace command
 			mm edit <target>:<number_line> <command>
 
 			Where <command> is just
 				<compiler> <filename.ext, filename2.ext, ...> <flags>
 
-		# Listing the entire makefile
-			mm list -A
-
 		# List all targets (only targets, not their respective commands)
 			mm list 
+		
+		# List entire makefile
+			mm list -A
 
-		# Listing a single target (with the commands)
+		# List makefile variables
+			mm list -V
+
+		# List a single target (with the commands)
 			mm list <target>
 
-		# Deleting target
+		# Delete a target
 			mm remove <target>
 
-		# Deleting full command
+		# Delete command
 			mm remove <target>:<number_line>
 	
 */
@@ -160,6 +163,8 @@ class CommandInterpreter {
  		} else if (_argc == 3) {
  			if (!strcasecmp(_argv[2], "-A")) {
  				std::cout << _mk.to_string() << std::endl;
+ 			} else if (!strcasecmp(_argv[2], "-V")) {
+ 				std::cout << _mk.list_variables() << std::endl;
  			} else {
 	 			std::cout << _mk.list_target(_argv[2]) << std::endl;
  			}

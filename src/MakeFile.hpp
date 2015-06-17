@@ -15,15 +15,19 @@ class MakeFile {
 	MakeFile(std::string path) : _file(path) {
 		FileInterpreter fi(&_file);
 		std::vector<Target> temporary;
-		fi.parseFile(&temporary);
+		std::vector<Variable> tempVariables;
+		fi.parseFile(&temporary, &tempVariables);
 		_listTarget = temporary;
+		_listVariable = tempVariables;
 	}
 	MakeFile(std::string path, bool overwrite) : _file(path) {
 		if (!overwrite) {
 			FileInterpreter fi(&_file);
 			std::vector<Target> temporary;
-			fi.parseFile(&temporary);
+			std::vector<Variable> tempVariables;
+			fi.parseFile(&temporary, &tempVariables);
 			_listTarget = temporary;
+			_listVariable = tempVariables;
 		}
 	}
 
@@ -153,6 +157,15 @@ class MakeFile {
 						std::string(t->get_commands().at(i).to_command());
 		}
 		return target;
+	}
+
+	std::string list_variables() {
+		std::string variables = "";
+		for (int i = 0; i < _listVariable.size(); i++) {
+			variables += std::string(_listVariable.at(i).get_key()) + "=" + 
+						 std::string(_listVariable.at(i).get_value()) + "\n";
+		}
+		return variables;
 	}
 
 	Target* get_target_as_pointer(char* targetName) {

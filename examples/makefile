@@ -1,3 +1,7 @@
+myAwesomeVar=myVar
+wonderVar=oasis
+compiler=g++
+
 test:
 	this is a testing command
 	another command
