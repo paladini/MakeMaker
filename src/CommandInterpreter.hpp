@@ -24,6 +24,15 @@
 			Where <command> is just
 				<compiler> <filename.ext, filename2.ext, ...> <flags>
 
+		# Listing the entire makefile
+			mm list -A
+
+		# List all targets (only targets, not their respective commands)
+			mm list 
+
+		# Listing a single target (with the commands)
+			mm list <target>
+
 		# Deleting target
 			mm remove <target>
 
@@ -56,19 +65,18 @@ class CommandInterpreter {
  	MakeFile parse() {
  		if (_argc < 2) {
  			print_usage();
- 		} else if (!strcasecmp(_argv[1], "list")){
-	 		parse_list();
-	 	} else {
- 			if(_argc == 2) {
-	 			print_usage();
-	 		} else if(!strcasecmp(_argv[1], "add")) {
+ 		}  else {
+	 		if(!strcasecmp(_argv[1], "add")) {
 	 			parse_add();
 	 		} else if(!strcasecmp(_argv[1], "remove")) {
 	 			parse_delete();
 	 		} else if(!strcasecmp(_argv[1], "edit")) {
 	 			parse_edit();
+	 		} else if(!strcasecmp(_argv[1], "list")) {
+	 			parse_list();
 	 		} else {
-	 			throw SomethingWrongException();
+	 			print_usage();
+	 			return _mk;
 	 		}
 	 		_mk.save();
  		}
@@ -96,23 +104,7 @@ class CommandInterpreter {
 			target.add_command(command);
 		}
 
- 		// TODO:
-		//	Differences between "mm <target> <command>" and "mm <target>:<lineOfCommand> <command>", where:
-		//      - In the first case, add a new target.
-		//      - In the second case, overwrites a command (given by the "lineOfCommand"). 
-
- 		// 	Compiler compiler(_argv[3]);
- 		// 	command.set_compiler(compiler);
-
- 		// 	std::vector<File> files = parse_files();
- 		// 	command.add_files(files);
-
- 		// 	int startsAt = 4 + files.size();
- 		// 	std::vector<Flag> flags = parse_flags(startsAt);
- 		// 	command.add_flags(flags);
- 		
  		_mk.add_target(target, true);
-
  	}
 
  	void parse_delete() {
@@ -122,7 +114,7 @@ class CommandInterpreter {
 
  			int line_number = get_line_number(std::string(_argv[2]));
  			if (line_number != -1) {
- 				_mk.remove_command_from_target(t, line_number);
+ 				_mk.remove_command_from_target(t, line_number-1);
  			} else {
 	 			_mk.remove_target(t);
  			}
@@ -152,7 +144,7 @@ class CommandInterpreter {
  			int startsAt = 4 + files.size();
  			std::vector<Flag> flags = parse_flags(startsAt);
  			command.add_flags(flags);
- 			old.add_command(command, lineNumber);
+ 			old.add_command(command, lineNumber-1);
  			_mk.add_target(old, true);
  		} else if (target == NULL) {
  			throw -3;
@@ -253,7 +245,13 @@ class CommandInterpreter {
 				"\n\n\t# Replace command" \
 				"\n\tmm edit <target>:<number_line> <command>" \
 				"\n\n\t    Where <command> is:" \
-				"\n\t    <compiler> <filename.ext, filename2.ext, ...> <flags>"  \
+				"\n\t    <compiler> <filename.ext, filename2.ext, ...> <flags>" \
+				"\n\n\t# List (show) entire makefile" \
+				"\n\tmm list -A" \
+				"\n\n\t# List all targets  (only targets, not their respective commands)" \
+				"\n\tmm list" \
+				"\n\n\t# List a single target (with its commands)" \
+				"\n\tmm list <target>" \
 				"\n\n\t# Delete target" \
 				"\n\tmm remove <target>" \
 				"\n\n\t# Delete command from target" \

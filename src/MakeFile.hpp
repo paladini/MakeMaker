@@ -147,9 +147,10 @@ class MakeFile {
 
 	std::string list_target(char* targetName) {
 		Target* t = get_target_as_pointer(targetName);
-		std::string target = std::string(t->get_title());
+		std::string target = std::string(t->get_title()) + ":";
 		for(int i = 0; i < t->get_commands().size(); i++) {
-			target += "\n" + std::string(t->get_commands().at(i).to_command());
+			target += "\n" + std::to_string(i+1) + ":" + 
+						std::string(t->get_commands().at(i).to_command());
 		}
 		return target;
 	}

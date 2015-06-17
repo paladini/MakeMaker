@@ -30,6 +30,15 @@ Now you can use `mm` to run MakeMaker. Please, check our current specification b
 	Where <command> is just
 		<compiler> <filename.ext, filename2.ext, ...> <flags>
 
+	# List entire makefile
+		mm list -A
+
+	# List all targets (only targets, not their respective commands)
+		mm list 
+
+	# List a single target (with the commands)
+		mm list <target>
+
 	## Delete target
 	mm remove <target>
 
@@ -47,6 +56,9 @@ Following you can check a description about the repository organization:
 
 	# MakeMaker documentation (some diagrams and other annoying things from software engineering).
 	documentation/
+
+	# Here you can find some makefile samples that MakeMaker can parse / work with.
+	examples/
 
 	# Folder where the compiled binaries are stored (only after compilation process).
 	binary/
