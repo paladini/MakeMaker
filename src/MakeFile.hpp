@@ -12,17 +12,19 @@ class MakeFile {
 
  public:
 
-	MakeFile(std::string path) : _file(path) {
-		FileInterpreter fi(&_file);
+	MakeFile(std::string path) {
+		_path = path;
+		FileInterpreter fi(path);
 		std::vector<Target> temporary;
 		std::vector<Variable> tempVariables;
 		fi.parseFile(&temporary, &tempVariables);
 		_listTarget = temporary;
 		_listVariable = tempVariables;
 	}
-	MakeFile(std::string path, bool overwrite) : _file(path) {
+
+	MakeFile(std::string path, bool overwrite) {
 		if (!overwrite) {
-			FileInterpreter fi(&_file);
+			FileInterpreter fi(path);
 			std::vector<Target> temporary;
 			std::vector<Variable> tempVariables;
 			fi.parseFile(&temporary, &tempVariables);
@@ -34,7 +36,8 @@ class MakeFile {
 	~MakeFile() {} 
 
 	void save () {
-		_file.write(to_string());
+		FileManager* _file = FileManager::get_singleton(_path);
+		_file->write(to_string());
 	}
 
 	std::string to_string() {
@@ -213,7 +216,7 @@ class MakeFile {
 	}
 
  private:
- 	FileManager _file;
+ 	std::string _path;
  	std::vector<Target> _listTarget;
  	std::vector<Variable> _listVariable;
 
