@@ -12,21 +12,23 @@
 
 class FileInterpreter {
  public:
-	FileInterpreter (FileManager* manager) {
-		_manager = *manager;
+	FileInterpreter (std::string path) {
+	   _path = path;
 	}
+
     ~FileInterpreter() {}
 
     void parseFile(std::vector<Target>* targets, std::vector<Variable>* variables) {
-        if(_manager.already_exists_a_makefile()){
-            std::string content = _manager.read();
+        FileManager* _manager = FileManager::get_singleton(_path);
+        if(_manager->already_exists_a_makefile()){
+            std::string content = _manager->read();
             foundTargets(content, targets, variables);
         }
     }
 
  private:
 
- 	FileManager _manager;
+ 	std::string _path;
 
 	void foundTargets (std::string content, std::vector<Target>* temp, std::vector<Variable>* variables) {
     	std::istringstream reader(content);
