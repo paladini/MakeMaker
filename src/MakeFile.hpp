@@ -14,7 +14,10 @@ class MakeFile {
 
 	MakeFile(std::string path) {
 		_path = path;
-		FileInterpreter fi(path);
+		FileManager* file = FileManager::get_singleton();
+		file->set_path(_path);
+
+		FileInterpreter fi = FileInterpreter();
 		std::vector<Target> temporary;
 		std::vector<Variable> tempVariables;
 		fi.parseFile(&temporary, &tempVariables);
@@ -23,8 +26,11 @@ class MakeFile {
 	}
 
 	MakeFile(std::string path, bool overwrite) {
+		_path = path;
+		FileManager* file = FileManager::get_singleton();
+		file->set_path(_path);
 		if (!overwrite) {
-			FileInterpreter fi(path);
+			FileInterpreter fi = FileInterpreter();
 			std::vector<Target> temporary;
 			std::vector<Variable> tempVariables;
 			fi.parseFile(&temporary, &tempVariables);
@@ -36,8 +42,8 @@ class MakeFile {
 	~MakeFile() {} 
 
 	void save () {
-		FileManager* _file = FileManager::get_singleton(_path);
-		_file->write(to_string());
+		FileManager* file = FileManager::get_singleton();
+		file->write(to_string());
 	}
 
 	std::string to_string() {
@@ -150,9 +156,13 @@ class MakeFile {
 		Target* tar = get_target_as_pointer(t.get_title());
 		tar->remove_command(line);
 
+		/*	why remove the target if it have none commands?
+		 	If we allow the user add target without commands,
+		 	shouldn't we allow the target prevail to the command's removal?
+
 		if (tar->get_commands().size() == 0) {
 			remove_target(*tar);
-		}
+		}*/
 	}
 
 	std::string list_targets() {

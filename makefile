@@ -40,6 +40,7 @@ test_compile:
 	$(CC) src/tests/Test.cpp -o binary/Test $(FLAGS)
 
 run_compile:
+	mkdir binary
 	$(CC) src/Run.cpp -o binary/mm $(FLAGS)
 	@echo "Compile finished!"
 

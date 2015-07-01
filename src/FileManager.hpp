@@ -6,9 +6,11 @@
 
 class FileManager {
  public:
- 	static FileManager* get_singleton(std::string path);
+ 	static FileManager* get_singleton();
 
 	void write(std::string newContent) {
+		if (!_verified)
+			throw -1;
 	 	std::ofstream makefile(_path.c_str());
 	 	if(makefile.is_open()) {
   			makefile << newContent;
@@ -18,7 +20,18 @@ class FileManager {
   		throw -1;
 	}
 
+	void set_path(std::string path) {
+		_path = path;
+	 	if(!verify()){
+	 		create();
+	 	} else {
+	 		_exists = true;
+	 	}
+	}
+
 	std::string read() {
+		if (!_verified)
+			throw -1;
 	 	std::string content;
 	 	std::string line;
 	 	std::ifstream makefile(_path.c_str());
@@ -37,23 +50,16 @@ class FileManager {
 	}
 	 
  private:
- 	FileManager(){};  // Private so that it can  not be called
-	FileManager(std::string path) {
-		_path = path;
-	 	if(!verify()){
-	 		create();
-	 	} else {
-	 		_exists = true;
-	 	}
-	} 
+ 	FileManager(){};
 
-    FileManager(FileManager const&){};             // copy constructor is private
-    FileManager& operator=(FileManager const&){};  // assignment operator is private
+    FileManager(FileManager const&){};
+    FileManager& operator=(FileManager const&){};
     static FileManager* m_pInstance;
 
  
 	bool verify() {
 		std::ifstream makefile((&_path)->c_str());
+		_verified = true;
   		return makefile.good();
 	}
 	 
@@ -64,13 +70,14 @@ class FileManager {
 	}
 	 
 	bool _exists = false;
+	bool _verified = false;
 	std::string _path;
 };
 
 FileManager* FileManager::m_pInstance = NULL;
-FileManager* FileManager::get_singleton(std::string path) {
-   	if (!m_pInstance)   // Only allow one instance of class to be generated.
-    	m_pInstance = new FileManager(path);
+FileManager* FileManager::get_singleton() {
+   	if (!m_pInstance)
+    	m_pInstance = new FileManager;
    	return m_pInstance;
 }
 

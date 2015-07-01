@@ -29,7 +29,7 @@ class Target {
  	}
 
  	void remove_command(int line) {
- 		if ((line >= 0) && (line <= _listCommand.size())) {
+ 		if ((line >= 0) && (line <= _listCommand.size() - 1)) {
  			_listCommand.erase(_listCommand.begin() + line);
  		} else {
  			throw OutOfRangeException();
